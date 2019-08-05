@@ -1,0 +1,2 @@
+recursive-include itop/static *.*
+include itop.json
