@@ -31,8 +31,8 @@ class ImageViewer(ipywidgets.VBox):
         self.lbl_img = ipywidgets.HTML(placeholder='label', layout=ipywidgets.Layout(height='28px'))
         self.btn_prev = ipywidgets.Button(icon='backward')
         self.btn_next = ipywidgets.Button(icon='forward')
-        self.inp_idx = ipywidgets.IntText(self._index, layout=ipywidgets.Layout(width='75px'))
-        self.lbl_len = ipywidgets.HTML(f'/ {len(self._images)-1}')
+        self.inp_idx = ipywidgets.IntText(0, layout=ipywidgets.Layout(width='75px'))
+        self.lbl_len = ipywidgets.HTML(f'/ {len(self.images)-1}')
         self.cvs_img = ImageCanvas(width=width, height=height, enlarge=enlarge, enable_rect=False)
         
         # Place elements
@@ -60,7 +60,7 @@ class ImageViewer(ipywidgets.VBox):
         
     @index.setter
     def index(self, idx):
-        idx = max(0, min(idx, len(self._images)-1))
+        idx = max(0, min(idx, len(self.images)-1))
         self._index = idx
         self.inp_idx.value = idx
         
