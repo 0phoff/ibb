@@ -1,6 +1,7 @@
 import ipywidgets
 from pathlib import Path
 from PIL import Image
+import numpy as np
 import brambox as bb
 from ._image_canvas import *
 from ._util import cast_alpha
@@ -130,12 +131,12 @@ class BramboxViewer(ipywidgets.VBox):
         self.bbdrawer[0]
         
     def draw(self, lbl, img, boxes):
-        self._lbl_img.value = lbl
+        self.lbl_img.value = lbl
         
         if isinstance(img, (str, Path)):
-            self._cvs_img.image = np.asarray(Image.open(img))
+            self.cvs_img.image = np.asarray(Image.open(img))
         else:
-            self._cvs_img.image = np.asarray(img)
+            self.cvs_img.image = np.asarray(img)
             
         self.boxes = boxes
         self.cvs_img.rectangles = boxes[['x_top_left', 'y_top_left', 'width', 'height', 'color', 'size', 'alpha']].to_dict('records')
