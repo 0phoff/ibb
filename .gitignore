@@ -12,3 +12,4 @@ itop/static/
 .DS_Store
 
 notebook
+.data
