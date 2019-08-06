@@ -1,7 +1,7 @@
 {
   "name": "itop",
   "version": "0.1.0",
-  "description": "IPython widgets for deep learning and computer vision",
+  "description": "Top notch IPython widgets for deep learning and computer vision",
   "author": "0phoff",
   "main": "lib/index.js",
   "repository": {
