@@ -56,8 +56,8 @@ class ImageCanvas(ipywidgets.DOMWidget):
     color = traitlets.Unicode('#1F77B4').tag(sync=True)
     alpha = traitlets.Unicode('00').tag(sync=True)
     size = traitlets.Int(2).tag(sync=True)
-    hover_style = traitlets.Dict(None, allow_none=True).tag(sync=True)
-    click_style = traitlets.Dict(None, allow_none=True).tag(sync=True)
+    hover_style = traitlets.Dict(default_value=None, allow_none=True).tag(sync=True)
+    click_style = traitlets.Dict(default_value=None, allow_none=True).tag(sync=True)
     
     # Attributes
     image = traittypes.Array(None, allow_none=True).tag(sync=True, to_json=array_to_binary)

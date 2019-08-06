@@ -200,12 +200,11 @@ var ImageCanvasView = widgets.DOMWidgetView.extend({
             ctx.rect(x, y, w, h);
             if (style) {
                 ctx.strokeStyle = style.color || rect.color || this.COLOR;
-                ctx.lineWidth = style.size || rect.size || this.size;
+                ctx.lineWidth = style.size || rect.size || this.SIZE;
                 ctx.fillStyle = ctx.strokeStyle + (style.alpha || rect.alpha || this.ALPHA);
             }
             else {
                 ctx.strokeStyle = rect.color || this.COLOR;
-                console.log(ctx.strokeStyle)
                 ctx.lineWidth = rect.size || this.SIZE;
                 ctx.fillStyle = ctx.strokeStyle + (rect.alpha || this.ALPHA);
             }
