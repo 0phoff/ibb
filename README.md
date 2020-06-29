@@ -1,20 +1,20 @@
-Itop
-====
+IBB
+===
 
-Top notch IPython widgets for deep learning and computer vision.
+IPython widgets for visualizing brambox annotation and detection dataframes on their images.
 These widgets help with doing computer vision research in IPython Notebooks.
 
 
 ## Widget List
 You can find more information about each widget by checking its doc-string:
 ```python
-import itop
+import ibb
 
 # Python
-help(itop.<WIDGET_NAME>)
+help(ibb.<WIDGET_NAME>)
 
 # Alternative in Notebook
-?itop.<WIDGET_NAME>
+?ibb.<WIDGET_NAME>
 ```
 
 - **ImageCanvas**: Barebones widget to draw numpy arrays as images and rectangles. Use this to create your own widgets.
@@ -29,17 +29,17 @@ To install use pip:
 **WIP** This package is still under development and thus not yet released on PyPi!
 
 ```bash
-> pip install itop
-> jupyter nbextension enable --py --sys-prefix itop
+> pip install ibb
+> jupyter nbextension enable --py --sys-prefix ibb
 ```
 
 
 For a development installation (requires npm),
 
 ```bash
-> git clone https://github.com/0phoff/itop.git
-> cd itop 
+> git clone https://github.com/0phoff/ibb.git
+> cd ibb 
 > pip install -e .
-> jupyter nbextension install --py --symlink --sys-prefix itop
-> jupyter nbextension enable --py --sys-prefix itop
+> jupyter nbextension install --py --symlink --sys-prefix ibb
+> jupyter nbextension enable --py --sys-prefix ibb
 ```

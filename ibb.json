@@ -1,5 +1,5 @@
 {
   "load_extensions": {
-    "itop/extension": true
+    "ibb/extension": true
   }
 }

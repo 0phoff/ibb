@@ -20,10 +20,10 @@ function serialize_numpy(data, manager) {
 var ImageCanvasModel = widgets.DOMWidgetModel.extend(
     {    
         defaults: _.extend(widgets.DOMWidgetModel.prototype.defaults(), {
-            _model_module : 'itop',
+            _model_module : 'ibb',
             _model_name : 'ImageCanvasModel',
             _model_module_version : '0.1.0',
-            _view_module : 'itop',
+            _view_module : 'ibb',
             _view_name : 'ImageCanvasView',
             _view_module_version : '0.1.0',                
         })

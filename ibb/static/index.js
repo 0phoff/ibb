@@ -98,10 +98,10 @@ function serialize_numpy(data, manager) {
 var ImageCanvasModel = widgets.DOMWidgetModel.extend(
     {    
         defaults: _.extend(widgets.DOMWidgetModel.prototype.defaults(), {
-            _model_module : 'itop',
+            _model_module : 'ibb',
             _model_name : 'ImageCanvasModel',
             _model_module_version : '0.1.0',
-            _view_module : 'itop',
+            _view_module : 'ibb',
             _view_name : 'ImageCanvasView',
             _view_module_version : '0.1.0',                
         })
@@ -17543,7 +17543,7 @@ module.exports = function(module) {
 /* 6 */
 /***/ (function(module, exports) {
 
-module.exports = {"name":"itop","version":"0.1.0","description":"Top notch IPython widgets for deep learning and computer vision","author":"0phoff","main":"lib/index.js","repository":{"type":"git","url":"https://github.com/itop/itop.git"},"keywords":["jupyter","widgets","ipython","ipywidgets","jupyterlab-extension"],"files":["lib/**/*.js","dist/*.js"],"scripts":{"clean":"rimraf dist/","prepublish":"webpack","build":"webpack","watch":"webpack --watch --mode=development","test":"echo \"Error: no test specified\" && exit 1"},"devDependencies":{"webpack":"^3.5.5","rimraf":"^2.6.1"},"dependencies":{"@jupyter-widgets/base":"^1.0.0","lodash":"^4.17.4"},"jupyterlab":{"extension":"lib/labplugin"}}
+module.exports = {"name":"ibb","version":"0.1.0","description":"Top notch IPython widgets for deep learning and computer vision","author":"0phoff","main":"lib/index.js","repository":{"type":"git","url":"https://github.com/ibb/ibb.git"},"keywords":["jupyter","widgets","ipython","ipywidgets","jupyterlab-extension"],"files":["lib/**/*.js","dist/*.js"],"scripts":{"clean":"rimraf dist/","prepublish":"webpack","build":"webpack","watch":"webpack --watch --mode=development","test":"echo \"Error: no test specified\" && exit 1"},"devDependencies":{"webpack":"^3.5.5","rimraf":"^2.6.1"},"dependencies":{"@jupyter-widgets/base":"^1.0.0","lodash":"^4.17.4"},"jupyterlab":{"extension":"lib/labplugin"}}
 
 /***/ })
 /******/ ])});;

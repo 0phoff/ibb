@@ -2,11 +2,11 @@ var plugin = require('./index');
 var base = require('@jupyter-widgets/base');
 
 module.exports = {
-  id: 'itop',
+  id: 'ibb',
   requires: [base.IJupyterWidgetRegistry],
   activate: function(app, widgets) {
       widgets.registerWidget({
-          name: 'itop',
+          name: 'ibb',
           version: plugin.version,
           exports: plugin
       });

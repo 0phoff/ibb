@@ -66,8 +66,8 @@ class NPM(Command):
     node_modules = os.path.join(node_root, 'node_modules')
 
     targets = [
-        os.path.join(here, 'itop', 'static', 'extension.js'),
-        os.path.join(here, 'itop', 'static', 'index.js')
+        os.path.join(here, 'ibb', 'static', 'extension.js'),
+        os.path.join(here, 'ibb', 'static', 'index.js')
     ]
 
     def initialize_options(self):
@@ -121,22 +121,22 @@ class NPM(Command):
         update_package_data(self.distribution)
 
 version_ns = {}
-with open(os.path.join(here, 'itop', '_version.py')) as f:
+with open(os.path.join(here, 'ibb', '_version.py')) as f:
     exec(f.read(), {}, version_ns)
 
 setup_args = {
-    'name': 'itop',
+    'name': 'ibb',
     'version': version_ns['__version__'],
     'description': 'IPython widgets for deep learning and computer vision',
     'long_description': LONG_DESCRIPTION,
     'include_package_data': True,
     'data_files': [
-        ('share/jupyter/nbextensions/itop', [
-            'itop/static/extension.js',
-            'itop/static/index.js',
-            'itop/static/index.js.map',
+        ('share/jupyter/nbextensions/ibb', [
+            'ibb/static/extension.js',
+            'ibb/static/index.js',
+            'ibb/static/index.js.map',
         ],),
-        ('etc/jupyter/nbconfig/notebook.d' ,['itop.json'])
+        ('etc/jupyter/nbconfig/notebook.d' ,['ibb.json'])
     ],
     'install_requires': [
         'ipywidgets>=7.0.0',

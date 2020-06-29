@@ -39,7 +39,7 @@ class BramboxViewer(ipywidgets.VBox):
     Args:
         images (callable or dict-like object): A way to get the image or path to the image from the image labels in the dataframe
         boxes (pandas.DataFrame): Bounding boxes to draw
-        label (pandas.Series): Label to write above the boxes; Default **nothing**
+        label (pandas.Series): Label to write above the boxes; Default **class_label (confidence)**
         color (pandas.Series): Color to use for drawing; Default **every class_label will get its own color, up to 10 labels**
         size (pandas.Series): Thickness of the border of the bounding boxes; Default **3**
         alpha (pandas.Series): Alpha fill value of the bounding boxes; Default **00**
@@ -131,7 +131,7 @@ class BramboxViewer(ipywidgets.VBox):
         self.bbdrawer[0]
         
     def draw(self, lbl, img, boxes):
-        self.lbl_img.value = lbl
+        self.lbl_img.value = str(lbl)
         
         if isinstance(img, (str, Path)):
             self.cvs_img.image = np.asarray(Image.open(img))

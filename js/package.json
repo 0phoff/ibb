@@ -1,12 +1,12 @@
 {
-  "name": "itop",
+  "name": "ibb",
   "version": "0.1.0",
-  "description": "Top notch IPython widgets for deep learning and computer vision",
+  "description": "IPython widgets for visualizing brambox annotation and detection dataframes on their images",
   "author": "0phoff",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/itop/itop.git"
+    "url": "https://github.com/ibb/ibb.git"
   },
   "keywords": [
     "jupyter",

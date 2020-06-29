@@ -74,7 +74,7 @@ define(function() { return /******/ (function(modules) { // webpackBootstrap
 // Some static assets may be required by the custom widget javascript. The base
 // url for the notebook is not known at build time and is therefore computed
 // dynamically.
-__webpack_require__.p = document.querySelector('body').getAttribute('data-base-url') + 'nbextensions/itop';
+__webpack_require__.p = document.querySelector('body').getAttribute('data-base-url') + 'nbextensions/ibb';
 
 
 // Configure requirejs
@@ -82,7 +82,7 @@ if (window.require) {
     window.require.config({
         map: {
             "*" : {
-                "itop": "nbextensions/itop/index",
+                "ibb": "nbextensions/ibb/index",
             }
         }
     });

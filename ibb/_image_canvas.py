@@ -41,10 +41,10 @@ class ImageCanvas(ipywidgets.DOMWidget):
         hovered (Integer): Index of the hovered rectangle
     """
     _model_name = traitlets.Unicode('ImageCanvasModel').tag(sync=True)
-    _model_module = traitlets.Unicode('itop').tag(sync=True)
+    _model_module = traitlets.Unicode('ibb').tag(sync=True)
     _model_module_version = traitlets.Unicode('0.1.0').tag(sync=True)
     _view_name = traitlets.Unicode('ImageCanvasView').tag(sync=True)
-    _view_module = traitlets.Unicode('itop').tag(sync=True)
+    _view_module = traitlets.Unicode('ibb').tag(sync=True)
     _view_module_version = traitlets.Unicode('0.1.0').tag(sync=True)
     
     # Settings

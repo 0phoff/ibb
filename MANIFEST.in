@@ -1,2 +1,2 @@
-recursive-include itop/static *.*
-include itop.json
+recursive-include ibb/static *.*
+include ibb.json
