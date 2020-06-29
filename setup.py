@@ -22,7 +22,7 @@ log.set_verbosity(log.DEBUG)
 log.info('setup.py entered')
 log.info('$PATH=%s' % os.environ['PATH'])
 
-LONG_DESCRIPTION = 'IPython widgets for deep learning and computer vision'
+LONG_DESCRIPTION = 'IPython widgets from Brambox'
 
 def js_prerelease(command, strict=False):
     """decorator for building minified js/css prior to another command"""
@@ -127,7 +127,7 @@ with open(os.path.join(here, 'ibb', '_version.py')) as f:
 setup_args = {
     'name': 'ibb',
     'version': version_ns['__version__'],
-    'description': 'IPython widgets for deep learning and computer vision',
+    'description': 'IPython widgets from Brambox',
     'long_description': LONG_DESCRIPTION,
     'include_package_data': True,
     'data_files': [
@@ -140,8 +140,6 @@ setup_args = {
     ],
     'install_requires': [
         'ipywidgets>=7.0.0',
-        'traittypes',
-        'Pillow'
     ],
     'packages': find_packages(),
     'zip_safe': False,
@@ -154,7 +152,7 @@ setup_args = {
 
     'author': '0phoff',
     'author_email': '',
-    'url': 'https://github.com/0phoff/x',
+    'url': 'https://github.com//ibb',
     'keywords': [
         'ipython',
         'jupyter',
@@ -172,6 +170,8 @@ setup_args = {
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
     ],
 }
 

@@ -1,12 +1,12 @@
 {
   "name": "ibb",
   "version": "0.1.0",
-  "description": "IPython widgets for visualizing brambox annotation and detection dataframes on their images",
+  "description": "IPython widgets from Brambox",
   "author": "0phoff",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ibb/ibb.git"
+    "url": "https://github.com//ibb.git"
   },
   "keywords": [
     "jupyter",
@@ -31,7 +31,7 @@
     "rimraf": "^2.6.1"
   },
   "dependencies": {
-    "@jupyter-widgets/base": "^1.0.0",
+    "@jupyter-widgets/base": "^1.1 || ^2 || ^3",
     "lodash": "^4.17.4"
   },
   "jupyterlab": {

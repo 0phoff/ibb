@@ -132,6 +132,9 @@ var ImageCanvasView = widgets.DOMWidgetView.extend({
             this.bg.width = this.WIDTH;
             this.bg.height = this.HEIGHT;
             this.bg.style.border = '1px solid lightgray';
+            this.result = document.createElement('canvas');
+            this.result.width = this.WIDTH;
+            this.result.height = this.HEIGHT;
             if (this.RECT) {
                 this.fg = document.createElement('canvas');
                 this.fg.width = this.WIDTH;
@@ -167,6 +170,7 @@ var ImageCanvasView = widgets.DOMWidgetView.extend({
                             
             // PY -> JS
             this.model.on('change:image', this.draw_image, this);
+            this.model.on('change:save', this.save, this);
             if (this.RECT) {
                 this.model.on('change:rectangles', this.draw_rectangles, this);
                 if (this.HOVER != null)
@@ -253,6 +257,36 @@ var ImageCanvasView = widgets.DOMWidgetView.extend({
                 if (click_idx != null && click_idx < this.rect.length) {
                     this._draw_rect(fxctx, this.rect[click_idx], this.CLICK);
                 }
+            }
+        },
+
+        save: function() {
+            var save_val = this.model.get('save');
+
+            if (save_val) {
+                // Clear result canvas
+                var ctx = this.result.getContext('2d');
+                ctx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
+
+                // Draw canvases
+                ctx.drawImage(this.bg, 0, 0, this.WIDTH, this.HEIGHT);
+                if (this.RECT) {
+                    ctx.drawImage(this.fg, 0, 0, this.WIDTH, this.HEIGHT);
+                    ctx.drawImage(this.fx, 0, 0, this.WIDTH, this.HEIGHT);
+                }
+
+                // Open in new tab
+                var data = this.result.toDataURL('png');
+                var w = window.open('about:blank');
+                setTimeout(function() {
+                  w.document.body.appendChild(w.document.createElement('img')).src = data;
+                }, 0);
+
+                // Reset save
+                setTimeout(() => {
+                  this.model.set('save', false);
+                  this.model.save_changes();
+                }, 0);
             }
         },
     
@@ -17543,7 +17577,7 @@ module.exports = function(module) {
 /* 6 */
 /***/ (function(module, exports) {
 
-module.exports = {"name":"ibb","version":"0.1.0","description":"Top notch IPython widgets for deep learning and computer vision","author":"0phoff","main":"lib/index.js","repository":{"type":"git","url":"https://github.com/ibb/ibb.git"},"keywords":["jupyter","widgets","ipython","ipywidgets","jupyterlab-extension"],"files":["lib/**/*.js","dist/*.js"],"scripts":{"clean":"rimraf dist/","prepublish":"webpack","build":"webpack","watch":"webpack --watch --mode=development","test":"echo \"Error: no test specified\" && exit 1"},"devDependencies":{"webpack":"^3.5.5","rimraf":"^2.6.1"},"dependencies":{"@jupyter-widgets/base":"^1.0.0","lodash":"^4.17.4"},"jupyterlab":{"extension":"lib/labplugin"}}
+module.exports = {"name":"ibb","version":"0.1.0","description":"IPython widgets from Brambox","author":"0phoff","main":"lib/index.js","repository":{"type":"git","url":"https://github.com//ibb.git"},"keywords":["jupyter","widgets","ipython","ipywidgets","jupyterlab-extension"],"files":["lib/**/*.js","dist/*.js"],"scripts":{"clean":"rimraf dist/","prepublish":"webpack","build":"webpack","watch":"webpack --watch --mode=development","test":"echo \"Error: no test specified\" && exit 1"},"devDependencies":{"webpack":"^3.5.5","rimraf":"^2.6.1"},"dependencies":{"@jupyter-widgets/base":"^1.1 || ^2 || ^3","lodash":"^4.17.4"},"jupyterlab":{"extension":"lib/labplugin"}}
 
 /***/ })
 /******/ ])});;

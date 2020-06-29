@@ -36,15 +36,16 @@ class ImageCanvas(ipywidgets.DOMWidget):
     Attributes:
     These attributes can be set and read from your python code to influence the canvas.
         image (numpy.ndarray): Image data in HWC order. See _validate_image for more information
-        rectangles (dict): Rectangles to draw. See _validate_rectanlges for more information
+        rectangles (dict): Rectangles to draw. See _validate_rectangles for more information
         clicked (Integer): Index of the clicked rectangle
         hovered (Integer): Index of the hovered rectangle
+        save (Bool): Save image and rectangles
     """
-    _model_name = traitlets.Unicode('ImageCanvasModel').tag(sync=True)
     _model_module = traitlets.Unicode('ibb').tag(sync=True)
+    _model_name = traitlets.Unicode('ImageCanvasModel').tag(sync=True)
     _model_module_version = traitlets.Unicode('0.1.0').tag(sync=True)
-    _view_name = traitlets.Unicode('ImageCanvasView').tag(sync=True)
     _view_module = traitlets.Unicode('ibb').tag(sync=True)
+    _view_name = traitlets.Unicode('ImageCanvasView').tag(sync=True)
     _view_module_version = traitlets.Unicode('0.1.0').tag(sync=True)
     
     # Settings
@@ -64,6 +65,7 @@ class ImageCanvas(ipywidgets.DOMWidget):
     rectangles = traitlets.List(None, allow_none=True).tag(sync=True)
     clicked = traitlets.Int(None, allow_none=True).tag(sync=True)
     hovered = traitlets.Int(None, allow_none=True).tag(sync=True)
+    save = traitlets.Bool(False).tag(sync=True)
     
     def __init__(self, *args, **kwargs):   
         for attr in ('color', 'alpha', 'size'):
@@ -189,7 +191,7 @@ class ImageCanvas(ipywidgets.DOMWidget):
         if size < 0:
             raise ValueError('Border size should be bigger or equal than zero [{size}]')
         return size
-    
+
     def _validate_fx(self, val):
         """ Validate hover/clicked attributes.
         These attributes should be dicts that can contain color, alpha and/or size values

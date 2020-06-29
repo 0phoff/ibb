@@ -6,34 +6,11 @@ import brambox as bb
 from ._image_canvas import *
 from ._util import cast_alpha
 
-__all__ = ['BramboxViewer']
+__all__ = ['BoundingBoxViewer']
 
 
-class IBoxDrawer(bb.util.BoxDrawer):
-    """ Temporarily copy new __getitem__ and draw functions, as they will be in V2.1.1
-
-    TODO:
-        The plan is to only release this package to PyPi once Brambox V2.1.1 gets released and then remove this class.
-    """
-    def __getitem__(self, idx):
-        if isinstance(idx, int):
-            lbl = self.image_labels[idx]
-        else:
-            lbl = idx
-
-        if callable(self.images):
-            img = self.images(lbl)
-        else:
-            img = self.images[lbl]
-
-        return self.draw(lbl, img, self.boxes[self.boxes.image == lbl])
-
-    def draw(self, lbl, img, boxes):
-        raise NotImplementedError('Actual function will be overridden')
-
-
-class BramboxViewer(ipywidgets.VBox):
-    """ This widget can visualize a brambox dataset.
+class BoundingBoxViewer(ipywidgets.VBox):
+    """ This widget can visualize a brambox dataset as bounding boxes drawn on top of the images.
     It's arguments work a lot like brambox's `brambox.util.BoxDrawer` class.
 
     Args:
@@ -62,7 +39,7 @@ class BramboxViewer(ipywidgets.VBox):
         Basically, as long as you can assign the value as a new column to the dataframe, it will work.
     """
     def __init__(self, images, boxes, label=True, color=None, size=None, alpha=None, show_empty=True, info=False, width=800, height=500, **kwargs):
-        self.bbdrawer = IBoxDrawer(images, boxes, label, color, size, show_empty)
+        self.bbdrawer = bb.util.BoxDrawer(images, boxes, label, color, size, show_empty)
         self.bbdrawer.draw = self.draw
         self.bbdrawer.boxes.color = 'rgb' + self.bbdrawer.boxes.color.astype(str)
         if 'alpha' not in self.bbdrawer.boxes.columns:
@@ -186,3 +163,6 @@ class BramboxViewer(ipywidgets.VBox):
             self.inp_idx.value = 0
         else:
             self.inp_idx.value = idx
+
+    def save(self):
+        self.cvs_img.save = True

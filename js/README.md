@@ -1,4 +1,4 @@
-IPython widgets for deep learning and computer vision
+IPython widgets from Brambox
 
 Package Install
 ---------------
