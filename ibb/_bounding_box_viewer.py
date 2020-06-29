@@ -1,4 +1,5 @@
 import ipywidgets
+import traitlets
 from pathlib import Path
 from PIL import Image
 import numpy as np
@@ -58,13 +59,9 @@ class BoundingBoxViewer(ipywidgets.VBox):
             kwargs['click_style'] = {'size': self.bbdrawer.boxes['size'].max() + 2}
         
         # Create elements
+        info_width = 200
         if self.info:
-            info_width = 200
             cvs_width = width - info_width
-            self.lbl_info = ipywidgets.HTML(
-                placeholder='info',
-                layout=ipywidgets.Layout(overflow_y='auto', padding='2px', width=str(info_width+1)+'px', height=str(height+2)+'px', border='1px solid lightgray', margin='0 0 0 -1px')
-            )
         else:
             cvs_width = width
                 
@@ -72,37 +69,42 @@ class BoundingBoxViewer(ipywidgets.VBox):
         self.lbl_box = ipywidgets.HTML(placeholder='label', layout=ipywidgets.Layout(height='28px'))
         self.btn_prev = ipywidgets.Button(icon='backward')
         self.btn_next = ipywidgets.Button(icon='forward')
+        self.btn_save = ipywidgets.Button(icon='fa-picture-o', tooltip='save image', layout=ipywidgets.Layout(width='34px'))
+        self.btn_info = ipywidgets.Button(icon='fa-bars', tooltip='toggle info', layout=ipywidgets.Layout(width='34px'))
         self.inp_idx = ipywidgets.IntText(0, layout=ipywidgets.Layout(width='75px'))
         self.lbl_len = ipywidgets.HTML(f'/ {len(self.bbdrawer)-1}')
         self.cvs_img = ImageCanvas(width=cvs_width, height=height, **kwargs)
+        self.lbl_info = ipywidgets.HTML(placeholder='info',
+            layout=ipywidgets.Layout(overflow_y='auto', padding='2px', width=str(info_width+1)+'px', height=str(height)+'px', border='1px solid lightgray', margin='0 0 0 -1px')
+        )
         
         # Place elements
         w = str(min(200, width//2)) + 'px'
         items = [
-            ipywidgets.HBox([self.lbl_img, self.lbl_box], layout=ipywidgets.Layout(width=str(width)+'px', justify_content='space-between')),
-            None,
+            ipywidgets.HBox([
+                self.lbl_img,
+                ipywidgets.HBox([self.lbl_box, self.btn_save, self.btn_info])
+            ], layout=ipywidgets.Layout(width=str(width)+'px', justify_content='space-between')),
+            ipywidgets.HBox(
+                [self.cvs_img, self.lbl_info] if self.info else [self.cvs_img],
+                layout=ipywidgets.Layout(width=str(width)+'px')
+            ),
             ipywidgets.HBox([
                 ipywidgets.HBox([self.btn_prev, self.btn_next], layout=ipywidgets.Layout(width=w)),
                 ipywidgets.HBox([self.inp_idx, self.lbl_len], layout=ipywidgets.Layout(width=w, justify_content='flex-end'))
             ], layout=ipywidgets.Layout(justify_content='space-between', width=str(width)+'px'))
         ]
         
-        if self.info:
-            items[1] = ipywidgets.HBox(
-                [self.cvs_img, self.lbl_info],
-                layout=ipywidgets.Layout(width=str(width)+'px')
-            )
-        else:
-            items[1] = self.cvs_img
-        
         super().__init__(items, layout=ipywidgets.Layout(width='100%', align_items='center'))
         
         # Actions
         self.inp_idx.observe(self.observe_index, 'value')
-        self.btn_prev.on_click(self.click_prev)
-        self.btn_next.on_click(self.click_next)
         self.cvs_img.observe(self.observe_hover, 'hovered')
         self.cvs_img.observe(self.observe_click, 'clicked')
+        self.btn_prev.on_click(self.click_prev)
+        self.btn_next.on_click(self.click_next)
+        self.btn_save.on_click(self.click_save)
+        self.btn_info.on_click(self.click_info)
         
         # Start
         self.bbdrawer[0]
@@ -126,7 +128,7 @@ class BoundingBoxViewer(ipywidgets.VBox):
     def observe_hover(self, change):
         val = change['new']
         if val is None:
-            if self.info or self.clicked is None:
+            if self.clicked is None:
                 self.lbl_box.value = ''
             else:
                 self.lbl_box.value = self.boxes.iat[self.clicked, self.boxes.columns.get_loc('label')]
@@ -137,18 +139,17 @@ class BoundingBoxViewer(ipywidgets.VBox):
         self.clicked = change['new']
         self.observe_hover(change)
         
-        if self.info:
-            if self.clicked is None:
-                self.lbl_info.value = ''
-            else:
-                box = self.boxes.iloc[self.clicked].copy()
+        if self.clicked is None:
+            self.lbl_info.value = ''
+        else:
+            box = self.boxes.iloc[self.clicked].copy()
 
-                s = '<dl>'
-                columns = sorted(box.index.difference(['image', 'color', 'size', 'label', 'alpha', 'x_top_left', 'y_top_left', 'width', 'height'])) + ['x_top_left', 'y_top_left', 'width', 'height']
-                for col in columns:
-                    s += f'<dt>{col}</dt><dd style="text-align:right; margin-bottom:5px">{box[col]}</dd>'
-                s += '</dl>'
-                self.lbl_info.value = s
+            s = '<dl>'
+            columns = sorted(box.index.difference(['image', 'color', 'size', 'label', 'alpha', 'x_top_left', 'y_top_left', 'width', 'height'])) + ['x_top_left', 'y_top_left', 'width', 'height']
+            for col in columns:
+                s += f'<dt>{col}</dt><dd style="text-align:right; margin-bottom:5px">{box[col]}</dd>'
+            s += '</dl>'
+            self.lbl_info.value = s
 
     def click_prev(self, btn):
         idx = self.inp_idx.value - 1
@@ -164,5 +165,15 @@ class BoundingBoxViewer(ipywidgets.VBox):
         else:
             self.inp_idx.value = idx
 
-    def save(self):
+    def click_save(self, btn):
         self.cvs_img.save = True
+
+    def click_info(self, btn):
+        self.info = not self.info
+
+        if self.info:
+            self.cvs_img.width -= 200
+            self.children[1].children = (self.cvs_img, self.lbl_info)
+        else:
+            self.cvs_img.width += 200
+            self.children[1].children = (self.cvs_img,)

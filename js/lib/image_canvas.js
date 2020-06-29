@@ -39,8 +39,6 @@ var ImageCanvasModel = widgets.DOMWidgetModel.extend(
 var ImageCanvasView = widgets.DOMWidgetView.extend({
         render: function() {
             // Constants
-            this.WIDTH = this.model.get('width');
-            this.HEIGHT = this.model.get('height');
             this.RECT = this.model.get('enable_rect');
             this.ENLARGE = this.model.get('enlarge');
             this.COLOR = this.model.get('color');
@@ -48,19 +46,41 @@ var ImageCanvasView = widgets.DOMWidgetView.extend({
             this.SIZE = this.model.get('size');
             this.HOVER = this.model.get('hover_style');
             this.CLICK = this.model.get('click_style');
+                            
+            // PY -> JS
+            this.model.on('change:width', this.render_children, this);
+            this.model.on('change:height', this.render_children, this);
+            this.model.on('change:image', this.draw_image, this);
+            this.model.on('change:save', this.save, this);
+            if (this.RECT) {
+                this.model.on('change:rectangles', this.draw_rectangles, this);
+                if (this.HOVER != null)
+                    this.model.on('change:hovered', this.draw_fx, this);
+                if (this.CLICK != null)
+                    this.model.on('change:clicked', this.draw_fx, this);
+            }
+            
+            // Start
+            this.render_children()
+        },
+
+        render_children: function() {
+            // Constants
+            this.width = this.model.get('width') - 2;
+            this.height = this.model.get('height') - 2;
             
             // Create elements
             this.bg = document.createElement('canvas');
-            this.bg.width = this.WIDTH;
-            this.bg.height = this.HEIGHT;
+            this.bg.width = this.width;
+            this.bg.height = this.height;
             this.bg.style.border = '1px solid lightgray';
             this.result = document.createElement('canvas');
-            this.result.width = this.WIDTH;
-            this.result.height = this.HEIGHT;
+            this.result.width = this.width;
+            this.result.height = this.height;
             if (this.RECT) {
                 this.fg = document.createElement('canvas');
-                this.fg.width = this.WIDTH;
-                this.fg.height = this.HEIGHT;
+                this.fg.width = this.width;
+                this.fg.height = this.height;
                 this.fg.style.position = 'absolute';
                 this.fg.style.top = '0px';
                 this.fg.style.left = '0px';
@@ -68,8 +88,8 @@ var ImageCanvasView = widgets.DOMWidgetView.extend({
                 this.fg.style.marginLeft = 'auto';
                 this.fg.style.marginRight = 'auto';
                 this.fx = document.createElement('canvas');
-                this.fx.width = this.WIDTH;
-                this.fx.height = this.HEIGHT;
+                this.fx.width = this.width;
+                this.fx.height = this.height;
                 this.fx.style.position = 'absolute';
                 this.fx.style.top = '0px';
                 this.fx.style.left = '0px';
@@ -81,28 +101,21 @@ var ImageCanvasView = widgets.DOMWidgetView.extend({
             // Add to DOM
             var div = document.createElement('div');
             div.style.textAlign = 'center';
-            div.style.minWidth = this.WIDTH + 'px';
-            div.style.minHeight = this.HEIGHT + 'px';
+            div.style.minWidth = this.width + 'px';
+            div.style.minHeight = this.height + 'px';
             div.appendChild(this.bg);
             if (this.RECT) {
                 div.appendChild(this.fg);
                 div.appendChild(this.fx);
             }
+
+            while (this.el.firstChild) this.el.firstChild.remove();
             this.el.appendChild(div);
-                            
-            // PY -> JS
-            this.model.on('change:image', this.draw_image, this);
-            this.model.on('change:save', this.save, this);
+
+            this.draw_image()
             if (this.RECT) {
-                this.model.on('change:rectangles', this.draw_rectangles, this);
-                if (this.HOVER != null)
-                    this.model.on('change:hovered', this.draw_fx, this);
-                if (this.CLICK != null)
-                    this.model.on('change:clicked', this.draw_fx, this);
-            }
-            
-            // JS -> PY
-            if (this.RECT) {
+                this.draw_rectangles()
+                this.draw_fx()
                 this.fx.onclick = this.onclick.bind(this);
                 this.fx.onmousemove = this.onhover.bind(this);
                 this.fx.onmouseleave = e => {
@@ -110,11 +123,6 @@ var ImageCanvasView = widgets.DOMWidgetView.extend({
                     this.touch();
                 };
             }
-            
-            // Start
-            this.draw_image()
-            if (this.RECT)
-                this.draw_rectangles()
         },
 
         draw_image: function() {
@@ -129,9 +137,9 @@ var ImageCanvasView = widgets.DOMWidgetView.extend({
             if (img) {
                 var imgd = new ImageData(img.data, img.shape[1], img.shape[0]);
 
-                if (!this.ENLARGE && img.shape[1] <= this.WIDTH && img.shape[0] <= this.HEIGHT) {
-                    this.offset_x = Math.floor((this.WIDTH - img.shape[1]) / 2);
-                    this.offset_y = Math.floor((this.HEIGHT - img.shape[0]) / 2);
+                if (!this.ENLARGE && img.shape[1] <= this.width && img.shape[0] <= this.height) {
+                    this.offset_x = Math.floor((this.width - img.shape[1]) / 2);
+                    this.offset_y = Math.floor((this.height - img.shape[0]) / 2);
                     bgctx.putImageData(imgd, this.offset_x, this.offset_y);
                 }
                 else {
@@ -139,12 +147,12 @@ var ImageCanvasView = widgets.DOMWidgetView.extend({
                         octx = oc.getContext('2d');
                     
                     // Compute scale and offset
-                    this.scale = Math.min(this.WIDTH / img.shape[1], this.HEIGHT / img.shape[0]);
+                    this.scale = Math.min(this.width / img.shape[1], this.height / img.shape[0]);
                     var scaled_w = img.shape[1] * this.scale,
                         scaled_h = img.shape[0] * this.scale;
                     
-                    this.offset_x = Math.floor((this.WIDTH - scaled_w) / 2);
-                    this.offset_y = Math.floor((this.HEIGHT - scaled_h) / 2);
+                    this.offset_x = Math.floor((this.width - scaled_w) / 2);
+                    this.offset_y = Math.floor((this.height - scaled_h) / 2);
                     
                     // Draw original image
                     oc.width = img.shape[1];
@@ -188,13 +196,13 @@ var ImageCanvasView = widgets.DOMWidgetView.extend({
             if (save_val) {
                 // Clear result canvas
                 var ctx = this.result.getContext('2d');
-                ctx.clearRect(0, 0, this.WIDTH, this.HEIGHT);
+                ctx.clearRect(0, 0, this.width, this.height);
 
                 // Draw canvases
-                ctx.drawImage(this.bg, 0, 0, this.WIDTH, this.HEIGHT);
+                ctx.drawImage(this.bg, 0, 0, this.width, this.height);
                 if (this.RECT) {
-                    ctx.drawImage(this.fg, 0, 0, this.WIDTH, this.HEIGHT);
-                    ctx.drawImage(this.fx, 0, 0, this.WIDTH, this.HEIGHT);
+                    ctx.drawImage(this.fg, 0, 0, this.width, this.height);
+                    ctx.drawImage(this.fx, 0, 0, this.width, this.height);
                 }
 
                 // Open in new tab
