@@ -29,7 +29,7 @@ npm publish
 
 ---
 
-3. __Setup version for next dev cycly:__  
+3. __Setup version for next dev cycle:__  
 Update \_version.py (add 'dev' and increment minor)  
 git add and git commit
 
