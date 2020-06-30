@@ -19,7 +19,7 @@ help(ibb.<WIDGET_NAME>)
 
 - **ImageCanvas**: Barebones widget to draw numpy arrays as images and rectangles. Use this to create your own widgets.
 - **ImageViewer**: Image list browser.
-- **BramboxViewer**: Brambox dataset browser. Browse through your annotations or detections for visual inspection.
+- **BoundingBoxViewer**: Brambox dataset browser. Browse through your annotations or detections for visual inspection.
 - **CutoutViewer**: Brambox dataset browser, but view individual annotations or detections as cutouts of the image.
 
 
