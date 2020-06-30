@@ -1,6 +1,10 @@
-<img alt="Logo" src="assets/logo.svg" width="100%"/>
+<div align="center">
+  
+<img alt="Logo" src="assets/logo.svg" width="60%"/>
 
 [![Version][version-badge]][release-url]
+
+</div>
 
 Interactive BramBox
 ===================
