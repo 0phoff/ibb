@@ -7,8 +7,8 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   sodipodi:docname="ibb.svg"
-   inkscape:version="1.0 (1.0+r73+1)"
+   sodipodi:docname="logo.svg"
+   inkscape:version="0.91 r13725"
    id="svg8"
    version="1.1"
    viewBox="0 0 31.485416 21.695834"
@@ -35,7 +35,7 @@
      inkscape:current-layer="layer1"
      inkscape:document-units="mm"
      inkscape:cy="42.435664"
-     inkscape:cx="51.281616"
+     inkscape:cx="-48.450808"
      inkscape:zoom="2.4264927"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
@@ -64,17 +64,14 @@
        id="g980">
       <g
          id="g964">
-        <text
-           xml:space="preserve"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.9333px;line-height:1;font-family:serif;-inkscape-font-specification:serif;font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
-           x="36.854664"
-           y="80.571014"
-           id="text909"><tspan
-             sodipodi:role="line"
-             id="tspan907"
-             x="36.854664"
-             y="80.571014"
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.9333px;font-family:serif;-inkscape-font-specification:serif;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none">I</tspan></text>
+        <g
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.93330002px;line-height:1;font-family:serif;-inkscape-font-specification:serif;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+           id="text909">
+          <path
+             d="m 41.03838,79.694584 1.57096,0 0,0.87643 -4.820368,0 0,-0.87643 1.57096,0 0,-10.583313 -1.57096,0 0,-0.884698 4.820368,0 0,0.884698 -1.57096,0 0,10.583313 z"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:16.93330002px;font-family:serif;-inkscape-font-specification:serif;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none"
+             id="path4153" />
+        </g>
         <rect
            style="fill:none;fill-opacity:0.406481;stroke:#000000;stroke-width:1.32292;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"
            id="rect911"
@@ -86,17 +83,14 @@
       <g
          id="g948"
          transform="translate(-0.21378583,-3.4049048)">
-        <text
-           id="text941"
-           y="75.539238"
-           x="52.914848"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556px;line-height:1;font-family:Roboto;-inkscape-font-specification:'Roboto, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-           xml:space="preserve"><tspan
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556px;font-family:serif;-inkscape-font-specification:serif;stroke-width:0.264583"
-             y="75.539238"
-             x="52.914848"
-             id="tspan939"
-             sodipodi:role="line">b</tspan></text>
+        <g
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556011px;line-height:1;font-family:Roboto;-inkscape-font-specification:'Roboto, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
+           id="text941">
+          <path
+             d="m 53.727891,75.174058 0,-4.630212 -0.609782,0 0,-0.36518 1.24368,0 0,2.270319 q 0.186036,-0.344509 0.471979,-0.506429 0.289388,-0.165365 0.713135,-0.165365 0.675239,0 1.102431,0.53399 0.427192,0.533991 0.427192,1.395265 0,0.861274 -0.427192,1.39871 -0.427192,0.53399 -1.102431,0.53399 -0.423747,0 -0.713135,-0.16192 -0.285943,-0.165364 -0.471979,-0.509874 l 0,0.571886 -1.24368,0 0,-0.36518 0.609782,0 z m 0.633898,-1.285022 q 0,0.661459 0.251492,1.009414 0.254938,0.34451 0.737251,0.34451 0.485759,0 0.733806,-0.389296 0.251492,-0.389297 0.251492,-1.147218 0,-0.761367 -0.251492,-1.147218 -0.248047,-0.38585 -0.733806,-0.38585 -0.482313,0 -0.737251,0.347954 -0.251492,0.347955 -0.251492,1.005969 l 0,0.361735 z"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556011px;font-family:serif;-inkscape-font-specification:serif;stroke-width:0.26458299"
+             id="path4150" />
+        </g>
         <rect
            y="68.675575"
            x="50.863983"
@@ -108,17 +102,14 @@
       <g
          transform="translate(-0.21378583,6.3846783)"
          id="g956">
-        <text
-           xml:space="preserve"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556px;line-height:1;font-family:Roboto;-inkscape-font-specification:'Roboto, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-           x="52.914848"
-           y="75.539238"
-           id="text952"><tspan
-             sodipodi:role="line"
-             id="tspan950"
-             x="52.914848"
-             y="75.539238"
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556px;font-family:serif;-inkscape-font-specification:serif;stroke-width:0.264583">b</tspan></text>
+        <g
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556011px;line-height:1;font-family:Roboto;-inkscape-font-specification:'Roboto, Normal';text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458299"
+           id="text952">
+          <path
+             d="m 53.727891,75.174058 0,-4.630212 -0.609782,0 0,-0.36518 1.24368,0 0,2.270319 q 0.186036,-0.344509 0.471979,-0.506429 0.289388,-0.165365 0.713135,-0.165365 0.675239,0 1.102431,0.53399 0.427192,0.533991 0.427192,1.395265 0,0.861274 -0.427192,1.39871 -0.427192,0.53399 -1.102431,0.53399 -0.423747,0 -0.713135,-0.16192 -0.285943,-0.165364 -0.471979,-0.509874 l 0,0.571886 -1.24368,0 0,-0.36518 0.609782,0 z m 0.633898,-1.285022 q 0,0.661459 0.251492,1.009414 0.254938,0.34451 0.737251,0.34451 0.485759,0 0.733806,-0.389296 0.251492,-0.389297 0.251492,-1.147218 0,-0.761367 -0.251492,-1.147218 -0.248047,-0.38585 -0.733806,-0.38585 -0.482313,0 -0.737251,0.347954 -0.251492,0.347955 -0.251492,1.005969 l 0,0.361735 z"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556011px;font-family:serif;-inkscape-font-specification:serif;stroke-width:0.26458299"
+             id="path4147" />
+        </g>
         <rect
            style="fill:none;fill-opacity:0.406481;stroke:#000000;stroke-width:0.79375;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"
            id="rect954"
