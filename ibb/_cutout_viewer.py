@@ -68,11 +68,15 @@ class CutoutViewer(ipywidgets.VBox):
             self.boxes['alpha'] = self.boxes['alpha'].apply(cast_alpha)
         
         # Create elements
+        width += 2
+        height += 2
         info_width = 200
         if self.info:
-            cvs_width = width+2 - info_width
+            cvs_width = width - info_width
         else:
-            cvs_width = width+2
+            cvs_width = width
+
+
                 
         self.lbl_img = ipywidgets.HTML(placeholder='image', layout=ipywidgets.Layout(height='28px'))
         self.lbl_box = ipywidgets.HTML(placeholder='label', layout=ipywidgets.Layout(height='28px'))
@@ -83,9 +87,9 @@ class CutoutViewer(ipywidgets.VBox):
         self.btn_rect = ipywidgets.Button(icon='fa-square-o', tooltip='toggle rectangles', layout=ipywidgets.Layout(width='34px'))
         self.inp_idx = ipywidgets.IntText(0, layout=ipywidgets.Layout(width='75px'))
         self.lbl_len = ipywidgets.HTML(f'/ {len(self.boxes)-1}')
-        self.cvs_img = ImageCanvas(width=cvs_width, height=height+2, **kwargs)
+        self.cvs_img = ImageCanvas(width=cvs_width, height=height, **kwargs)
         self.lbl_info = ipywidgets.HTML(placeholder='info',
-            layout=ipywidgets.Layout(overflow_y='auto', padding='2px', width=str(info_width+1)+'px', height=str(height+2)+'px', border='1px solid lightgray', margin='0 0 0 -1px')
+            layout=ipywidgets.Layout(overflow_y='auto', padding='2px', width=str(info_width+1)+'px', height=str(height)+'px', border='1px solid lightgray', margin='0 0 0 -1px')
         )
         
         # Place elements
