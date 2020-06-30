@@ -100,9 +100,9 @@ class ImageCanvas(ipywidgets.DOMWidget):
         """
         img = proposal['value']
         if self.auto_clear:
-                self.rectangles = None
-                self.hovered = None
-                self.clicked = None
+            self.rectangles = None
+            self.hovered = None
+            self.clicked = None
         if not isinstance(img, np.ndarray):
             raise TypeError(f'image should by a numpy array [{type(img)}]')
             

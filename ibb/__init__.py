@@ -3,6 +3,7 @@ from ._version import version_info, __version__
 from ._image_canvas import *
 from ._image_viewer import *
 from ._bounding_box_viewer import *
+from ._cutout_viewer import *
 
 def _jupyter_nbextension_paths():
     """Called by Jupyter Notebook Server to detect if it is a valid nbextension and
