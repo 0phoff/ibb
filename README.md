@@ -1,6 +1,9 @@
-IBB
-===
+<img alt="Logo" src="assets/logo.svg" width="100%"/>
 
+[![Version][version-badge]][release-url]
+
+Interactive BramBox
+===================
 IPython widgets for visualizing brambox annotation and detection dataframes on their images.
 These widgets help with doing computer vision research in IPython Notebooks.
 
@@ -27,8 +30,6 @@ help(ibb.<WIDGET_NAME>)
 
 To install use pip:
 
-**WIP** This package is still under development and thus not yet released on PyPi!
-
 ```bash
 > pip install ibb
 > jupyter nbextension enable --py --sys-prefix ibb
@@ -44,3 +45,6 @@ For a development installation (requires npm),
 > jupyter nbextension install --py --symlink --sys-prefix ibb
 > jupyter nbextension enable --py --sys-prefix ibb
 ```
+
+[version-badge]: https://img.shields.io/pypi/v/ibb.svg?label=version
+[release-url]: https://pypi.org/project/ibb
