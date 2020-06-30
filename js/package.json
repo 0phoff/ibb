@@ -1,19 +1,23 @@
 {
   "name": "ibb",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "IPython widgets from Brambox",
   "author": "0phoff",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com//ibb.git"
+    "url": "https://github.com/0phoff/ibb.git"
   },
   "keywords": [
+    "computer-vision",
+    "deep-learning",
+    "object-detection",
+    "visualization",
+    "notebook",
+    "ipython",
     "jupyter",
     "widgets",
-    "ipython",
-    "ipywidgets",
-    "jupyterlab-extension"
+    "ipywidgets"
   ],
   "files": [
     "lib/**/*.js",

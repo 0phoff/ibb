@@ -17585,7 +17585,7 @@ module.exports = function(module) {
 /* 6 */
 /***/ (function(module, exports) {
 
-module.exports = {"name":"ibb","version":"0.1.0","description":"IPython widgets from Brambox","author":"0phoff","main":"lib/index.js","repository":{"type":"git","url":"https://github.com//ibb.git"},"keywords":["jupyter","widgets","ipython","ipywidgets","jupyterlab-extension"],"files":["lib/**/*.js","dist/*.js"],"scripts":{"clean":"rimraf dist/","prepublish":"webpack","build":"webpack","watch":"webpack --watch --mode=development","test":"echo \"Error: no test specified\" && exit 1"},"devDependencies":{"webpack":"^3.5.5","rimraf":"^2.6.1"},"dependencies":{"@jupyter-widgets/base":"^1.1 || ^2 || ^3","lodash":"^4.17.4"},"jupyterlab":{"extension":"lib/labplugin"}}
+module.exports = {"name":"ibb","version":"1.0.0","description":"IPython widgets from Brambox","author":"0phoff","main":"lib/index.js","repository":{"type":"git","url":"https://github.com/0phoff/ibb.git"},"keywords":["computer-vision","deep-learning","object-detection","visualization","notebook","ipython","jupyter","widgets","ipywidgets"],"files":["lib/**/*.js","dist/*.js"],"scripts":{"clean":"rimraf dist/","prepublish":"webpack","build":"webpack","watch":"webpack --watch --mode=development","test":"echo \"Error: no test specified\" && exit 1"},"devDependencies":{"webpack":"^3.5.5","rimraf":"^2.6.1"},"dependencies":{"@jupyter-widgets/base":"^1.1 || ^2 || ^3","lodash":"^4.17.4"},"jupyterlab":{"extension":"lib/labplugin"}}
 
 /***/ })
 /******/ ])});;

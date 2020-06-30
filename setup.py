@@ -22,8 +22,6 @@ log.set_verbosity(log.DEBUG)
 log.info('setup.py entered')
 log.info('$PATH=%s' % os.environ['PATH'])
 
-LONG_DESCRIPTION = 'IPython widgets from Brambox'
-
 def js_prerelease(command, strict=False):
     """decorator for building minified js/css prior to another command"""
     class DecoratedCommand(command):
@@ -128,7 +126,8 @@ setup_args = {
     'name': 'ibb',
     'version': version_ns['__version__'],
     'description': 'IPython widgets from Brambox',
-    'long_description': LONG_DESCRIPTION,
+    'long_description': open('README.md').read(),
+    'long_description_content_type': 'text/markdown',
     'include_package_data': True,
     'data_files': [
         ('share/jupyter/nbextensions/ibb', [
@@ -152,11 +151,17 @@ setup_args = {
 
     'author': '0phoff',
     'author_email': '',
-    'url': 'https://github.com//ibb',
+    'url': 'https://github.com/0phoff/ibb',
     'keywords': [
+        'computer-vision',
+        'deep-learning',
+        'object-detection', 
+        'visualization', 
+        'notebook', 
         'ipython',
         'jupyter',
         'widgets',
+        'ipywidgets', 
     ],
     'classifiers': [
         'Development Status :: 4 - Beta',
@@ -164,12 +169,7 @@ setup_args = {
         'Intended Audience :: Developers',
         'Intended Audience :: Science/Research',
         'Topic :: Multimedia :: Graphics',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
