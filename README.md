@@ -8,7 +8,7 @@
 
 Interactive BramBox
 ===================
-IPython widgets for visualizing brambox annotation and detection dataframes on their images.
+IPython widgets for visualizing [brambox](http://eavise.gitlab.io/brambox/) annotation and detection dataframes on their images.
 These widgets help with doing computer vision research in IPython Notebooks.
 
 
