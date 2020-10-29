@@ -43,10 +43,10 @@ class ImageCanvas(ipywidgets.DOMWidget):
     """
     _model_module = traitlets.Unicode('ibb').tag(sync=True)
     _model_name = traitlets.Unicode('ImageCanvasModel').tag(sync=True)
-    _model_module_version = traitlets.Unicode('1.1.0').tag(sync=True)
+    _model_module_version = traitlets.Unicode('2.0.0').tag(sync=True)
     _view_module = traitlets.Unicode('ibb').tag(sync=True)
     _view_name = traitlets.Unicode('ImageCanvasView').tag(sync=True)
-    _view_module_version = traitlets.Unicode('1.1.0').tag(sync=True)
+    _view_module_version = traitlets.Unicode('2.0.0').tag(sync=True)
     
     # Settings
     width = traitlets.Int(750).tag(sync=True)

@@ -65,10 +65,10 @@ var ImageCanvasModel = widgets.DOMWidgetModel.extend(
         defaults: _.extend(widgets.DOMWidgetModel.prototype.defaults(), {
             _model_module : 'ibb',
             _model_name : 'ImageCanvasModel',
-            _model_module_version : '1.1.0',
+            _model_module_version : '2.0.0',
             _view_module : 'ibb',
             _view_name : 'ImageCanvasView',
-            _view_module_version : '1.1.0',                
+            _view_module_version : '2.0.0',                
         })
     },
     {
