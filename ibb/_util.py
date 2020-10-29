@@ -1,3 +1,6 @@
+import numpy as np
+
+
 def cast_alpha(alpha):
     if isinstance(alpha, str):
         if len(alpha) == 0:
@@ -16,3 +19,18 @@ def cast_alpha(alpha):
         return '%02x' % int(alpha * 255)
     else:
         raise TypeError(f'Alpha should be a HEX string, integer or float [{type(alpha)}]')
+
+
+def box_to_coords(row):
+    return np.array([
+        [row.x_top_left, row.y_top_left],
+        [row.x_top_left+row.width, row.y_top_left],
+        [row.x_top_left+row.width, row.y_top_left+row.height],
+        [row.x_top_left, row.y_top_left+row.height]
+    ])
+
+
+def mask_to_coords(row):
+    if hasattr(row.segmentation, 'exterior'):
+        return np.array(row.segmentation.exterior.coords)
+    return np.array(row.segmentation.coords)

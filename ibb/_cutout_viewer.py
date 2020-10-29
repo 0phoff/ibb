@@ -6,7 +6,7 @@ import brambox as bb
 import ipywidgets
 from brambox.util._visual import setup_boxes
 from ._image_canvas import *
-from ._util import cast_alpha
+from ._util import cast_alpha, box_to_coords, mask_to_coords
 
 __all__ = ['CutoutViewer']
 
@@ -23,7 +23,7 @@ class CutoutViewer(ipywidgets.VBox):
         size (pandas.Series): Thickness of the border of the bounding boxes; Default **3**
         alpha (pandas.Series): Alpha fill value of the bounding boxes; Default **50**
         info (boolean): Whether or not to show a side-pane with extra information about the clicked bounding box; Default **False**
-        draw_rect (boolean): Whether or not to draw a rectangle around the object; Default **False**
+        draw_box (int): Whether or to draw the bounding box or mask (see Note); Default **mask if available, else bounding box**
         pad (int, float or tuple of 2 int/float): Padding to add around the width and height (see Note); Default **10**
         width (Integer): Width of the widget in pixels; Default **750**
         height (Integer): Height of the widget in pixels; Default **500**
@@ -49,11 +49,22 @@ class CutoutViewer(ipywidgets.VBox):
         - *(float, float)*  : Separate pixel padding for the width and height. The padding is computed as ``(pad[0]*box_width, pad[1]*box_height)``.
 
         Note that the padding is clipped inside of the image boundaries.
+
+    Note:
+        The `draw_box` variable can be one of 3 different values:
+
+        - 0 : Draw nothing
+        - 1 : Draw bounding boxes
+        - 2 : Draw segmentation masks (only available if 'segmentation' column is found in boxes)
+
+        You can also change this value by clicking on the "toggle box/mask" button.
     """
-    def __init__(self, images, boxes, label=True, color=None, size=None, alpha=50, info=False, draw_rect=False, pad=10, width=800, height=500, **kwargs):
+    def __init__(self, images, boxes, label=True, color=None, size=None, alpha=50, info=False, draw_box=None, pad=10, width=800, height=500, **kwargs):
         self.images = images
         self.info = info
-        self.draw_rect = draw_rect
+        self._draw_box_max = 3 if 'segmentation' in boxes.columns else 2
+        self.draw_box = self._draw_box_max - 1
+        self._draw_box_tt = ['none', 'box', 'mask']
         self._img = None
         if isinstance(pad, int):
             self.pad = (pad, pad)
@@ -66,6 +77,9 @@ class CutoutViewer(ipywidgets.VBox):
         if 'alpha' not in self.boxes.columns:
             self.boxes['alpha'] = alpha
             self.boxes['alpha'] = self.boxes['alpha'].apply(cast_alpha)
+        self.boxes['boxcoords'] = self.boxes.apply(box_to_coords, axis=1)
+        if self._draw_box_max == 3:
+            self.boxes['maskcoords'] = self.boxes.apply(mask_to_coords, axis=1)
         
         # Create elements
         width += 2
@@ -76,15 +90,13 @@ class CutoutViewer(ipywidgets.VBox):
         else:
             cvs_width = width
 
-
-                
         self.lbl_img = ipywidgets.HTML(placeholder='image', layout=ipywidgets.Layout(height='28px'))
         self.lbl_box = ipywidgets.HTML(placeholder='label', layout=ipywidgets.Layout(height='28px'))
         self.btn_prev = ipywidgets.Button(icon='backward')
         self.btn_next = ipywidgets.Button(icon='forward')
         self.btn_save = ipywidgets.Button(icon='fa-picture-o', tooltip='save image', layout=ipywidgets.Layout(width='34px'))
         self.btn_info = ipywidgets.Button(icon='fa-bars', tooltip='toggle info', layout=ipywidgets.Layout(width='34px'))
-        self.btn_rect = ipywidgets.Button(icon='fa-square-o', tooltip='toggle rectangles', layout=ipywidgets.Layout(width='34px'))
+        self.btn_box = ipywidgets.Button(icon='fa-square-o', tooltip=f'toggle box/mask [{self._draw_box_tt[self.draw_box]}]', layout=ipywidgets.Layout(width='34px'))
         self.inp_idx = ipywidgets.IntText(0, layout=ipywidgets.Layout(width='75px'))
         self.lbl_len = ipywidgets.HTML(f'/ {len(self.boxes)-1}')
         self.cvs_img = ImageCanvas(width=cvs_width, height=height, **kwargs)
@@ -97,7 +109,7 @@ class CutoutViewer(ipywidgets.VBox):
         items = [
             ipywidgets.HBox([
                 self.lbl_img,
-                ipywidgets.HBox([self.lbl_box, self.btn_save, self.btn_rect, self.btn_info])
+                ipywidgets.HBox([self.lbl_box, self.btn_save, self.btn_box, self.btn_info])
             ], layout=ipywidgets.Layout(width=str(width)+'px', justify_content='space-between')),
             ipywidgets.HBox(
                 [self.cvs_img, self.lbl_info] if self.info else [self.cvs_img],
@@ -116,13 +128,14 @@ class CutoutViewer(ipywidgets.VBox):
         self.btn_prev.on_click(self.click_prev)
         self.btn_next.on_click(self.click_next)
         self.btn_save.on_click(self.click_save)
-        self.btn_rect.on_click(self.click_rect)
+        self.btn_box.on_click(self.click_box)
         self.btn_info.on_click(self.click_info)
         
         # Start
         self.draw(0)
         
     def draw(self, index):
+        self.cvs_img.image = None
         box = self.boxes.iloc[index].copy()
         lbl = str(box.image)
 
@@ -130,9 +143,13 @@ class CutoutViewer(ipywidgets.VBox):
         self.lbl_img.value = lbl
         self.lbl_box.value = box.label
         s = '<dl>'
-        columns = sorted(box.index.difference(['image', 'color', 'size', 'label', 'alpha', 'x_top_left', 'y_top_left', 'width', 'height'])) + ['x_top_left', 'y_top_left', 'width', 'height']
+        columns = sorted(box.index.difference(['image', 'color', 'size', 'label', 'alpha', 'x_top_left', 'y_top_left', 'width', 'height', 'boxcoords', 'maskcoords'])) + ['x_top_left', 'y_top_left', 'width', 'height']
         for col in columns:
-            s += f'<dt>{col}</dt><dd style="text-align:right; margin-bottom:5px">{box[col]}</dd>'
+            if col == 'segmentation':
+                numcoords = len(box[col].exterior.coords) if hasattr(box[col], 'exterior') else len(box[col].coords)
+                s += f'<dt>{col}</dt><dd style="text-align:right; margin-bottom:5px">{type(box[col]).__name__} ({numcoords - 1})</dd>'
+            else:
+                s += f'<dt>{col}</dt><dd style="text-align:right; margin-bottom:5px">{box[col]}</dd>'
         s += '</dl>'
         self.lbl_info.value = s
             
@@ -161,13 +178,22 @@ class CutoutViewer(ipywidgets.VBox):
         y1 = ceil(min(img.shape[0], box.y_top_left + box.height + pad[1]))
 
         self.cvs_img.image = img[y0:y1, x0:x1]
-        if self.draw_rect:
-            box = box[['x_top_left', 'y_top_left', 'width', 'height', 'color', 'size', 'alpha']].to_dict()
-            box['x_top_left'] -= x0
-            box['y_top_left'] -= y0
-            self.cvs_img.rectangles = [box]
+        if self.draw_box == 2:
+            box = box[['maskcoords', 'color', 'size', 'alpha']].to_dict()
+            box['coords'] = box.pop('maskcoords').copy()
+            box['coords'][:, 0] -= x0
+            box['coords'][:, 1] -= y0
+            box['coords'] = box['coords'].tolist()
+            self.cvs_img.polygons = [box]
+        elif self.draw_box == 1:
+            box = box[['boxcoords', 'color', 'size', 'alpha']].to_dict()
+            box['coords'] = box.pop('boxcoords').copy()
+            box['coords'][:, 0] -= x0
+            box['coords'][:, 1] -= y0
+            box['coords'] = box['coords'].tolist()
+            self.cvs_img.polygons = [box]
         else:
-            self.cvs_img.rectangles = None
+            self.cvs_img.polygons = None
     
     def observe_index(self, change):
         idx = max(0, min(change['new'], len(self.boxes)-1))
@@ -201,6 +227,7 @@ class CutoutViewer(ipywidgets.VBox):
             self.cvs_img.width += 200
             self.children[1].children = (self.cvs_img,)
 
-    def click_rect(self, btn):
-        self.draw_rect = not self.draw_rect
+    def click_box(self, btn):
+        self.draw_box = (self.draw_box + 1) % self._draw_box_max
+        btn.tooltip = f'toggle box/mask [{self._draw_box_tt[self.draw_box]}]'
         self.draw(int(self.inp_idx.value))

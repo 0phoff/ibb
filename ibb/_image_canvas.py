@@ -17,41 +17,41 @@ def array_to_binary(ar, obj=None):
     
 @ipywidgets.register
 class ImageCanvas(ipywidgets.DOMWidget):
-    """ This widget is capable of displaying numpy array as images and draw rectangles on them.
-    It scales the images to fit in the view and ensures the rectangles are scaled accordingly as well.
-    It is also capable to provide hover/click statuses for the displayed rectangles.
+    """ This widget is capable of displaying numpy array as images and draw polygons on them.
+    It scales the images to fit in the view and ensures the polygons are scaled accordingly as well.
+    It is also capable to provide hover/click statuses for the displayed polygons.
     
     Args:
         width (Integer): Width of the widget in pixels; Default **750**
         height (Integer): Height of the widget in pixels; Default **500**
         enable_rect (Boolean): Whether to enable the rectangle functionality; Default **True**
-        auto_clear (Boolean): Whether to clear the rectangles when drawing a new image; Default **True**
+        auto_clear (Boolean): Whether to clear the polygons when drawing a new image; Default **True**
         enlarge (Boolean): Whether to enlarge an image to take up the most space in the canvas; Default **True**
-        color (String): Default color to draw rectangles; Default **#1F77B4**
-        alpha (String): Default alpha fill value for the rectangles; Default **00**
-        size (Integer): Default border thickness for the rectangles; Default **2**
+        color (String): Default color to draw polygons; Default **#1F77B4**
+        alpha (String): Default alpha fill value for the polygons; Default **00**
+        size (Integer): Default border thickness for the polygons; Default **2**
         hover_style (Dict): Default hover style (can contain color,alpha and/or size properties); Default **None**
         click_style (Dict): Default click style (can contain color,alpha and/or size properties); Default **None**
 
     Attributes:
     These attributes can be set and read from your python code to influence the canvas.
         image (numpy.ndarray): Image data in HWC order. See _validate_image for more information
-        rectangles (dict): Rectangles to draw. See _validate_rectangles for more information
+        polygons (dict): polygons to draw. See _validate_polygons for more information
         clicked (Integer): Index of the clicked rectangle
         hovered (Integer): Index of the hovered rectangle
-        save (Bool): Save image and rectangles
+        save (Bool): Save image and polygons
     """
     _model_module = traitlets.Unicode('ibb').tag(sync=True)
     _model_name = traitlets.Unicode('ImageCanvasModel').tag(sync=True)
-    _model_module_version = traitlets.Unicode('0.1.0').tag(sync=True)
+    _model_module_version = traitlets.Unicode('1.1.0').tag(sync=True)
     _view_module = traitlets.Unicode('ibb').tag(sync=True)
     _view_name = traitlets.Unicode('ImageCanvasView').tag(sync=True)
-    _view_module_version = traitlets.Unicode('0.1.0').tag(sync=True)
+    _view_module_version = traitlets.Unicode('1.1.0').tag(sync=True)
     
     # Settings
     width = traitlets.Int(750).tag(sync=True)
     height = traitlets.Int(500).tag(sync=True)
-    enable_rect = traitlets.Bool(True).tag(sync=True)
+    enable_poly = traitlets.Bool(True).tag(sync=True)
     auto_clear = traitlets.Bool(True)
     enlarge = traitlets.Bool(True).tag(sync=True)
     color = traitlets.Unicode('#1F77B4').tag(sync=True)
@@ -62,7 +62,7 @@ class ImageCanvas(ipywidgets.DOMWidget):
     
     # Attributes
     image = traittypes.Array(None, allow_none=True).tag(sync=True, to_json=array_to_binary)
-    rectangles = traitlets.List(None, allow_none=True).tag(sync=True)
+    polygons = traitlets.List(None, allow_none=True).tag(sync=True)
     clicked = traitlets.Int(None, allow_none=True).tag(sync=True)
     hovered = traitlets.Int(None, allow_none=True).tag(sync=True)
     save = traitlets.Bool(False).tag(sync=True)
@@ -100,11 +100,14 @@ class ImageCanvas(ipywidgets.DOMWidget):
         """
         img = proposal['value']
         if self.auto_clear:
-            self.rectangles = None
+            self.polygons = None
             self.hovered = None
             self.clicked = None
+
+        if img is None:
+            return img
         if not isinstance(img, np.ndarray):
-            raise TypeError(f'image should by a numpy array [{type(img)}]')
+            raise TypeError(f'image should by a numpy array or None [{type(img)}]')
             
         if img.dtype == np.uint8:
             if img.ndim == 2:
@@ -129,36 +132,35 @@ class ImageCanvas(ipywidgets.DOMWidget):
         else:
             raise TypeError(f'Image type not supported [{img.dtype}]')
         
-    @traitlets.validate('rectangles')
-    def _validate_rectangles(self, proposal):
-        """ Validate correct rectangles data
+    @traitlets.validate('polygons')
+    def _validate_polygons(self, proposal):
+        """ Validate correct polygon data
 
         Valid data types:
-            - list of dictionaries with keys: x_top_left, y_top_left, width, height, color<optional>, alpha<optional>, size<optional>
+            - list of dictionaries with keys: coords, color<optional>, alpha<optional>, size<optional>
             - None (clears)
 
         Warning:
             The individual data values are not validated, as that would slow down everything!
             It is up to the user to ensure that the values have the following types:
-                - x_top_left, y_top_left, width, height: Number
+                - coords: 2D numpy array with X,Y coordinates
                 - color: RGB string
                 - alpha: 2 character HEX string (00-FF)
                 - size: Integer
         """
-        rect = proposal['value']
+        poly = proposal['value']
         self.hovered = None
         self.clicked = None
-        if rect is None:
-            return rect
+        if poly is None:
+            return poly
 
-        columns = ['x_top_left', 'y_top_left', 'width', 'height']
-        if isinstance(rect, list):
-            for r in rect:
-                if not all(col in r for col in columns):
-                    raise ValueError(f'Rectangle keys missing')
-            return rect
+        if isinstance(poly, list):
+            for p in poly:
+                if ('coords' not in p) or (not isinstance(p['coords'], list)):
+                    raise ValueError('polygon coords attribute not a np.ndarray or missing')
+            return poly
         else:
-            raise TypeError(f'Rectangles should be a list<dict> or pandas.DataFrame [{type(rect)}]')
+            raise TypeError(f'Polygons should be a list<dict> [{type(poly)}]')
                 
     @traitlets.validate('color')
     def _validate_color(self, proposal):

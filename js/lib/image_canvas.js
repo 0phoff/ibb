@@ -16,16 +16,59 @@ function serialize_numpy(data, manager) {
     return data;
 }
 
+function centroid_polygon(poly) {
+    const centroid = [0, 0];
+    for (const [x, y] of poly) {
+        centroid[0] += x;
+        centroid[1] += y;
+    }
+
+    centroid[0] /= poly.length;
+    centroid[1] /= poly.length;
+
+    return centroid;
+};
+
+function inside_polygon(point, poly) {
+    // ray-casting algorithm based on
+    // https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html/pnpoly.html
+    
+    var x = point[0], y = point[1];
+    
+    var inside = false;
+    for (var i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+        var xi = poly[i][0], yi = poly[i][1];
+        var xj = poly[j][0], yj = poly[j][1];
+        
+        var intersect = ((yi > y) != (yj > y))
+            && (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+        if (intersect) inside = !inside;
+    }
+    
+    return inside;
+};
+
+function area_polygon(poly) {
+    area = 0;
+
+    for (let i=0, j=poly.length - 1; i < poly.length; i++) {
+        area += (poly[j][0] + poly[i][0]) * (poly[j][1] - poly[i][1]); 
+        j = i;
+    }   
+
+    return area / 2; 
+};
+
 
 var ImageCanvasModel = widgets.DOMWidgetModel.extend(
     {    
         defaults: _.extend(widgets.DOMWidgetModel.prototype.defaults(), {
             _model_module : 'ibb',
             _model_name : 'ImageCanvasModel',
-            _model_module_version : '0.1.0',
+            _model_module_version : '1.1.0',
             _view_module : 'ibb',
             _view_name : 'ImageCanvasView',
-            _view_module_version : '0.1.0',                
+            _view_module_version : '1.1.0',                
         })
     },
     {
@@ -39,7 +82,7 @@ var ImageCanvasModel = widgets.DOMWidgetModel.extend(
 var ImageCanvasView = widgets.DOMWidgetView.extend({
         render: function() {
             // Constants
-            this.RECT = this.model.get('enable_rect');
+            this.POLY = this.model.get('enable_poly');
             this.ENLARGE = this.model.get('enlarge');
             this.COLOR = this.model.get('color');
             this.ALPHA = this.model.get('alpha');
@@ -52,8 +95,8 @@ var ImageCanvasView = widgets.DOMWidgetView.extend({
             this.model.on('change:height', this.render_children, this);
             this.model.on('change:image', this.draw_image, this);
             this.model.on('change:save', this.save, this);
-            if (this.RECT) {
-                this.model.on('change:rectangles', this.draw_rectangles, this);
+            if (this.POLY) {
+                this.model.on('change:polygons', this.draw_polygons, this);
                 if (this.HOVER != null)
                     this.model.on('change:hovered', this.draw_fx, this);
                 if (this.CLICK != null)
@@ -77,7 +120,7 @@ var ImageCanvasView = widgets.DOMWidgetView.extend({
             this.result = document.createElement('canvas');
             this.result.width = this.width;
             this.result.height = this.height;
-            if (this.RECT) {
+            if (this.POLY) {
                 this.fg = document.createElement('canvas');
                 this.fg.width = this.width;
                 this.fg.height = this.height;
@@ -104,7 +147,7 @@ var ImageCanvasView = widgets.DOMWidgetView.extend({
             div.style.minWidth = this.width + 'px';
             div.style.minHeight = this.height + 'px';
             div.appendChild(this.bg);
-            if (this.RECT) {
+            if (this.POLY) {
                 div.appendChild(this.fg);
                 div.appendChild(this.fx);
             }
@@ -113,8 +156,8 @@ var ImageCanvasView = widgets.DOMWidgetView.extend({
             this.el.appendChild(div);
 
             this.draw_image()
-            if (this.RECT) {
-                this.draw_rectangles()
+            if (this.POLY) {
+                this.draw_polygons()
                 this.draw_fx()
                 this.fx.onclick = this.onclick.bind(this);
                 this.fx.onmousemove = this.onhover.bind(this);
@@ -164,14 +207,14 @@ var ImageCanvasView = widgets.DOMWidgetView.extend({
                 }
             }
         },
-    
-        draw_rectangles: function() {
-            this.rect = this.model.get('rectangles');
+
+        draw_polygons: function() {
+            this.poly = this.model.get('polygons');
             var fgctx = this.fg.getContext('2d');
             
             fgctx.clearRect(0, 0, this.fg.width, this.fg.height);
-            if (this.rect)
-                this.rect.forEach(rect => {this._draw_rect(fgctx, rect)});                
+            if (this.poly)
+                this.poly.forEach(poly => {this._draw_poly(fgctx, poly)});                
         },
     
         draw_fx: function() {
@@ -180,12 +223,12 @@ var ImageCanvasView = widgets.DOMWidgetView.extend({
                 fxctx = this.fx.getContext('2d');
             
             fxctx.clearRect(0, 0, this.fx.width, this.fx.height);
-            if (this.rect) {
-                if (hover_idx != null && hover_idx < this.rect.length) {
-                    this._draw_rect(fxctx, this.rect[hover_idx], this.HOVER);
+            if (this.poly) {
+                if (hover_idx != null && hover_idx < this.poly.length) {
+                    this._draw_poly(fxctx, this.poly[hover_idx], this.HOVER);
                 }
-                if (click_idx != null && click_idx < this.rect.length) {
-                    this._draw_rect(fxctx, this.rect[click_idx], this.CLICK);
+                if (click_idx != null && click_idx < this.poly.length) {
+                    this._draw_poly(fxctx, this.poly[click_idx], this.CLICK);
                 }
             }
         },
@@ -200,7 +243,7 @@ var ImageCanvasView = widgets.DOMWidgetView.extend({
 
                 // Draw canvases
                 ctx.drawImage(this.bg, 0, 0, this.width, this.height);
-                if (this.RECT) {
+                if (this.POLY) {
                     ctx.drawImage(this.fg, 0, 0, this.width, this.height);
                     ctx.drawImage(this.fx, 0, 0, this.width, this.height);
                 }
@@ -222,33 +265,40 @@ var ImageCanvasView = widgets.DOMWidgetView.extend({
     
         onclick: function(e) {
             var [x, y] = this._get_image_coord(e.clientX, e.clientY);
-            this.model.set('clicked', this._get_closest_rect(x, y));
+            this.model.set('clicked', this._get_closest_poly(x, y));
             this.touch();
         },
     
         onhover: function(e) {
             var [x, y] = this._get_image_coord(e.clientX, e.clientY);
-            this.model.set('hovered', this._get_closest_rect(x, y));
+            this.model.set('hovered', this._get_closest_poly(x, y));
             this.touch();
         },
     
-        _draw_rect: function(ctx, rect, style=null) {
-            var x = this.offset_x + (rect.x_top_left * this.scale),
-                y = this.offset_y + (rect.y_top_left * this.scale),
-                w = rect.width * this.scale,
-                h = rect.height * this.scale;
-            
+        _draw_poly: function(ctx, poly, style=null) {
+            const coords = poly.coords.map(([x, y]) => [
+              this.offset_x + (x * this.scale),
+              this.offset_y + (y * this.scale)
+            ]);
+
+            // Draw
             ctx.beginPath();
-            ctx.rect(x, y, w, h);
+            ctx.moveTo(coords[0][0], coords[0][1]);
+            for (const [x, y] of coords.slice(1)) {
+                ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            
+            // Styles
             if (style) {
-                ctx.strokeStyle = style.color || rect.color || this.COLOR;
-                ctx.lineWidth = style.size || rect.size || this.SIZE;
-                ctx.fillStyle = ctx.strokeStyle + (style.alpha || rect.alpha || this.ALPHA);
+                ctx.strokeStyle = style.color || poly.color || this.COLOR;
+                ctx.lineWidth = style.size || poly.size || this.SIZE;
+                ctx.fillStyle = ctx.strokeStyle + (style.alpha || poly.alpha || this.ALPHA);
             }
             else {
-                ctx.strokeStyle = rect.color || this.COLOR;
-                ctx.lineWidth = rect.size || this.SIZE;
-                ctx.fillStyle = ctx.strokeStyle + (rect.alpha || this.ALPHA);
+                ctx.strokeStyle = poly.color || this.COLOR;
+                ctx.lineWidth = poly.size || this.SIZE;
+                ctx.fillStyle = ctx.strokeStyle + (poly.alpha || this.ALPHA);
             }
 
             ctx.stroke();
@@ -267,49 +317,39 @@ var ImageCanvasView = widgets.DOMWidgetView.extend({
             return [x, y]
         },
     
-        _get_closest_rect: function(x, y) {
-            if (this.rect == null)
+        _get_closest_poly: function(x, y) {
+            if (this.poly === null || this.poly.length === 0)
                 return null;
-            
-            var candidate = this.rect
+
+            var candidate = (this.poly
                 // Remember original index
-                .map((rect, idx) => {return {idx, rect}})
+                .map((poly, idx) => {return {idx, poly}})
                 // Filter boxes based on mouse position
-                .filter(({rect}) => {
-                    return (x >= rect.x_top_left) && (x <= rect.x_top_left + rect.width)
-                        && (y >= rect.y_top_left) && (y <= rect.y_top_left + rect.height);
-                })
+                .filter(({poly}) => inside_polygon([x, y], poly.coords))
                 // Reduce to find smallest box
-                .reduce((total, current, idx, arr) => {
-                    if (!total.length)
-                        total = arr;
-                    
-                    for (var i=0; i < total.length; i++) {
-                        if (current.idx != total[i].idx
-                            && current.rect.width <= total[i].rect.width
-                            && current.rect.height <= total[i].rect.height)
-                            total.splice(i, 1);
+                .reduce((smallest, current) => {
+                    const area = area_polygon(current.poly.coords);
+
+                    if ((smallest.length === 0) || (area < smallest[0].area)) {
+                        return [{...current, area}];
+                    } else if (area === smallest[0].area) {
+                        return [...smallest, {...current, area}];
                     }
-                    
-                    return total;
+                    return smallest;
                 }, [])
                 // Reduce to position closest to center
-                .reduce((total, current) => {
-                    var dx = Math.abs(x - (current.rect.x_top_left + current.rect.width / 2)),
-                        dy = Math.abs(y - (current.rect.y_top_left + current.rect.height / 2)),
-                        d = Math.sqrt(dx * dx + dy * dy);
+                .reduce((closest, current) => {
+                    const [cx, cy] = centroid_polygon(current.poly.coords);
+                    const distance = Math.sqrt(Math.pow(x - cx, 2) + Math.pow(y - cy, 2));
 
-                    if (total == null || d < total.d) {
-                        return {
-                            'idx': current.idx,
-                            'rect': current.rect,
-                            d
-                        };
+                    if ((closest === null) || (distance < closest.distance)) {
+                        return {...current, distance};
                     }
-                    return total;
-                }, null);
-            
-            if (candidate == null)
+                    return closest;
+                }, null)
+            );
+
+            if (candidate === null)
                 return null;
             return candidate.idx;
         },
