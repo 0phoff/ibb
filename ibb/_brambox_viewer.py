@@ -6,10 +6,10 @@ import brambox as bb
 from ._image_canvas import *
 from ._util import cast_alpha, box_to_coords, mask_to_coords
 
-__all__ = ['BoundingBoxViewer']
+__all__ = ['BramboxViewer']
 
 
-class BoundingBoxViewer(ipywidgets.VBox):
+class BramboxViewer(ipywidgets.VBox):
     """ This widget can visualize a brambox dataset as bounding boxes drawn on top of the images.
     It's arguments work a lot like brambox's `brambox.util.BoxDrawer` class.
 
@@ -70,6 +70,7 @@ class BoundingBoxViewer(ipywidgets.VBox):
         self.clicked = None
         self.conf = 'confidence' in self.bbdrawer.boxes
         
+        # ImageCanvas arguments
         if 'hover_style' not in kwargs:
             kwargs['hover_style'] = {'alpha': .5}
         if 'click_style' not in kwargs:
