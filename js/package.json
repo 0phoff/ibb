@@ -1,6 +1,6 @@
 {
   "name": "ibb",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "IPython widgets from Brambox",
   "author": "0phoff",
   "main": "lib/index.js",
