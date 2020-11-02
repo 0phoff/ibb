@@ -52,11 +52,11 @@ function area_polygon(poly) {
     area = 0;
 
     for (let i=0, j=poly.length - 1; i < poly.length; i++) {
-        area += (poly[j][0] + poly[i][0]) * (poly[j][1] - poly[i][1]); 
+        area += (poly[j][0] + poly[i][0]) * Math.abs(poly[j][1] - poly[i][1]); 
         j = i;
     }   
 
-    return area / 2; 
+    return Math.abs(area / 2);
 };
 
 
