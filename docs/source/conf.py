@@ -110,8 +110,8 @@ todo_include_todos = False
 # documentation.
 #
 # html_theme_options = {}
-html_logo = '_static/logo.svg'
-# html_favicon = '_static/logo.ico'
+html_logo = '_static/logo-light.svg'
+html_favicon = '_static/logo.ico'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
