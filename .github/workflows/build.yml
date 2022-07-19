@@ -47,11 +47,10 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install -U pip setuptools codecov
-          npm install -g codecov
       - name: Test the extension
         run: |
           python -m pip install --upgrade -v -e ".[examples, docs]"
-          yarn run lint:check
+          npm run lint:check
 
       - name: Check docs can be build
         run: |
