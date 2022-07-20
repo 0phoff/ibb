@@ -6,7 +6,8 @@ build:
     python: "3.8"
     nodejs: "18"
   jobs:
-    pre_install: npm install
+    pre_install:
+      - npm install
 
 conda:
   environment: docs/environment.yml
