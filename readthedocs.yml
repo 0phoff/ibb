@@ -7,8 +7,9 @@ build:
     nodejs: "18"
   jobs:
     pre_install:
-      - npm install
-      - npm run build
+      - npm install -g yarn
+      - yarn install --frozen-lockfile
+      - yarn build
 
 conda:
   environment: docs/environment.yml
