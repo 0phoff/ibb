@@ -13,7 +13,7 @@
     "dist/*.js",
     "css/*.css"
   ],
-  "homepage": "https://github.com/0phoff/ibb",
+  "homepage": "https://ibb.readthedocs.io",
   "bugs": {
     "url": "https://github.com/0phoff/ibb/issues"
   },
@@ -26,7 +26,7 @@
   "types": "./lib/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://github.com//ibb"
+    "url": "https://github.com/0phoff/ibb"
   },
   "scripts": {
     "build": "yarn run build:lib && yarn run build:nbextension && yarn run build:labextension:dev",
