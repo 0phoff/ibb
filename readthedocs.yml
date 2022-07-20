@@ -9,7 +9,7 @@ build:
     pre_install: npm install
 
 conda:
-  file: docs/environment.yml
+  environment: docs/environment.yml
 
 python:
   install:

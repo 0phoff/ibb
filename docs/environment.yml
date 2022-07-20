@@ -1,4 +1,3 @@
-
 name: ibb_docs
 channels:
   - conda-forge
