@@ -46,7 +46,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m pip install -U pip setuptools codecov
+          python -m pip install -U pip setuptools
           npm install
       - name: Test the extension
         run: |
