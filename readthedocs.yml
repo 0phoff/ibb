@@ -6,10 +6,10 @@ build:
     python: miniconda3-4.7
   jobs:
     pre_install:
-      - pip install -e '.[examples,docs]'
       - npm install -g yarn
       - yarn install --frozen-lockfile
       - yarn build
+      - pip install -e '.[examples,docs]'
 
 conda:
   environment: docs/environment.yml
