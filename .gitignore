@@ -159,3 +159,4 @@ ibb/labextension
 MANIFEST
 ibb/labextension/**
 ibb/nbextension/**
+docs/source/_static/embed-bundle.*
