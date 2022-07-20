@@ -1,6 +1,6 @@
 <div align="center">
 
-<img alt="Logo" src="docs/source/_static/logo.svg" width="60%"/>
+<img alt="Logo" src="https://raw.githubusercontent.com/0phoff/ibb/master/docs/source/_static/logo.svg" width="60%"/>
 
 [![PyPi][pypi-badge]][pypi-url]
 [![NPM][npm-badge]][npm-url]
