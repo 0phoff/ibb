@@ -2,7 +2,9 @@
 
 <img alt="Logo" src="docs/source/_static/logo.svg" width="60%"/>
 
-[![Version][version-badge]][release-url]
+[![PyPi][pypi-badge]][pypi-url]
+[![NPM][npm-badge]][npm-url]
+[![Documentation][docs-badge]][docs-url]
 
 </div>
 
@@ -51,5 +53,9 @@ For a development installation (requires npm),
 > jupyter nbextension enable --py --sys-prefix ibb
 ```
 
-[version-badge]: https://img.shields.io/pypi/v/ibb.svg?label=version
-[release-url]: https://pypi.org/project/ibb
+[pypi-badge]: https://img.shields.io/pypi/v/ibb?logo=pypi
+[pypi-url]: https://pypi.org/project/ibb
+[npm-badge]: https://img.shields.io/npm/v/ibb?logo=npm
+[npm-url]: https://npmjs.com/package/ibb
+[docs-badge]: https://img.shields.io/readthedocs/ibb?logo=readthedocs
+[docs-url]: https://ibb.readthedocs.io
