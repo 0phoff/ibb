@@ -154,4 +154,8 @@ ibb/labextension/*.tgz
 
 # Packed lab extensions
 ibb/labextension
+
+# Custom
 MANIFEST
+ibb/labextension/**
+ibb/nbextension/**
