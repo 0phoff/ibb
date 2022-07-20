@@ -6,8 +6,8 @@ build:
     python: miniconda3-4.7
   jobs:
     pre_install:
+      - pip install -e '.[examples,docs]'
       - npm install -g yarn
-      - pip install -e .[examples, docs]
       - yarn install --frozen-lockfile
       - yarn build
 
