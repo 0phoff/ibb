@@ -3,8 +3,10 @@ channels:
   - conda-forge
 dependencies:
   - python=3.*
+  - pip
   - nodejs
   - jupyter
+  - jupyterlab
   - jupyter_sphinx
   - sphinx
   - sphinx_rtd_theme
