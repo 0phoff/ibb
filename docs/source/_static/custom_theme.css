@@ -1,0 +1,64 @@
+body {
+    font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
+}
+
+h1, h2, .rst-content .toctree-wrapper p.caption, h3, h4, h5, h6, legend, p.caption {
+    font-family: "Lato","proxima-nova","Helvetica Neue",Arial,sans-serif;
+}
+
+/* Use white for docs background */
+.wy-nav-content {
+  min-height: 100vh;
+  max-width: 1000px;
+}
+
+@media screen and (min-width: 1400px) {
+    .wy-nav-content-wrap {
+      background: #fff;
+    }
+
+    .wy-nav-content {
+        background-color: #fff;
+    }
+}
+
+/* Fixes for mobile */
+.wy-nav-top i {
+    padding-top: 0;
+}
+
+.wy-nav-top > a {
+    display: none;
+}
+
+/* This is needed to ensure that logo above search scales properly */
+.wy-side-nav-search a {
+    display: block;
+}
+
+/* Default footer text is quite big */
+footer {
+    font-size: 80%;
+}
+
+footer .rst-footer-buttons {
+    font-size: 125%; /* revert footer settings - 1/80% = 125% */
+}
+
+footer p {
+    font-size: 100%;
+}
+
+/* For hidden headers that appear in TOC tree */
+/* see http://stackoverflow.com/a/32363545/3343043 */
+.rst-content .hidden-section {
+    display: none;
+}
+
+nav .hidden-section {
+    display: inherit;
+}
+
+.wy-side-nav-search>div.version {
+  color: #00BFD8;
+}

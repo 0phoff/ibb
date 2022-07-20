@@ -1,11 +1,10 @@
 
 IBB
-=====================================
+===
 
 Version: |release|
 
-Jupyter Widget Library for Brambox.
-
+Jupyter Widget Library for Brambox. |br|
 This package contains IPython widgets for visualizing `brambox <http://eavise.gitlab.io/brambox>`_ annotation and detection dataframes on their images.
 These widgets help with doing computer vision research in Jupyter Notebooks or Jupyter Lab environments.
 
@@ -28,7 +27,7 @@ or with conda::
    :caption: Installation and usage
 
    installing
-   examples/index
+   api/index
 
 
 .. toctree::
@@ -38,8 +37,4 @@ or with conda::
    develop-install
 
 
-.. links
-
-.. _`Jupyter widgets`: https://jupyter.org/widgets.html
-
-.. _`notebook`: https://jupyter-notebook.readthedocs.io/en/latest/
+.. include:: /links.rst

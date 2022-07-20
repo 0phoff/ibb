@@ -78,8 +78,8 @@ version_ns = {}
 with open(_version_py) as f:
     exec(f.read(), version_ns)
 
-# The short X.Y version.
-version = '%i.%i' % version_ns['version_info'][:2]
+# The short X.Y.Z version.
+version = '%i.%i.%i' % version_ns['version_info'][:3]
 # The full version, including alpha/beta/rc tags.
 release = version_ns['__version__']
 
@@ -109,14 +109,18 @@ todo_include_todos = False
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
-# html_theme_options = {}
+html_theme_options = {
+    'collapse_navigation': False,
+    'display_version': True,
+    'logo_only': True,
+}
+html_static_path = ['_static']
 html_logo = '_static/logo-light.svg'
 html_favicon = '_static/logo.ico'
-
-# Add any paths that contain custom static files (such as style sheets) here,
-# relative to this directory. They are copied after the builtin static files,
-# so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_css_files = [
+    'https://fonts.googleapis.com/css?family=Lato',
+    'custom_theme.css',
+]
 
 
 # -- Options for HTMLHelp output ------------------------------------------
@@ -202,7 +206,33 @@ if not on_rtd:  # only import and set the theme if we're building docs locally
 # that nbsphinx complains about:
 #
 nbsphinx_allow_errors = True # exception ipstruct.py ipython_genutils
+nbsphinx_prolog = """
+{% set snake_case = env.docname.split('/')|last %}
+{% set camel_case = snake_case.split('_')|map('capitalize')|join %}
 
+-------------------------
+{{ camel_case | escape }}
+-------------------------
+
+.. currentmodule:: ibb
+
+.. autoclass:: {{ camel_case }}
+   :members:
+
+Examples
+--------
+
+.. warning::
+
+    Note that the widgets are not responding, as we do not have a python backend running!
+
+"""
+
+nbsphinx_epilog = """
+.. include:: /links.rst
+"""
+
+# Start
 from sphinx.util import logging
 logger = logging.getLogger(__name__)
 
