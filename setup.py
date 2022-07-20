@@ -95,6 +95,7 @@ setup_args = dict(
     install_requires=[
         'ipywidgets>=7.0.0',
         'pillow',
+        'traittypes',
     ],
     extras_require={
         'examples': [
