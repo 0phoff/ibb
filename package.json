@@ -29,19 +29,19 @@
     "url": "https://github.com/0phoff/ibb"
   },
   "scripts": {
-    "build": "yarn run build:lib && yarn run build:nbextension && yarn run build:labextension:dev",
-    "build:prod": "yarn run build:lib && yarn run build:nbextension && yarn run build:labextension",
+    "build": "yarn-or-npm run build:lib && yarn-or-npm run build:nbextension && yarn-or-npm run build:labextension:dev",
+    "build:prod": "yarn-or-npm run build:lib && yarn-or-npm run build:nbextension && yarn-or-npm run build:labextension",
     "build:labextension": "jupyter labextension build .",
     "build:labextension:dev": "jupyter labextension build --development True .",
     "build:lib": "tsc",
     "build:nbextension": "webpack",
-    "clean": "yarn run clean:lib && yarn run clean:nbextension && yarn run clean:labextension",
+    "clean": "yarn-or-npm run clean:lib && yarn-or-npm run clean:nbextension && yarn-or-npm run clean:labextension",
     "clean:lib": "rimraf lib",
     "clean:labextension": "rimraf ibb/labextension",
     "clean:nbextension": "rimraf ibb/nbextension/static/index.js",
     "lint": "eslint . --ext .ts,.tsx --fix",
     "lint:check": "eslint . --ext .ts,.tsx",
-    "prepack": "yarn run build:lib",
+    "prepack": "yarn-or-npm run build:lib",
     "watch": "npm-run-all -p watch:*",
     "watch:lib": "tsc -w",
     "watch:nbextension": "webpack --watch --mode=development",
@@ -76,7 +76,8 @@
     "ts-loader": "^8.0.0",
     "typescript": "~4.1.3",
     "webpack": "^5.61.0",
-    "webpack-cli": "^4.0.0"
+    "webpack-cli": "^4.0.0",
+    "yarn-or-npm": "^3.0.1"
   },
   "jupyterlab": {
     "extension": "lib/plugin",
