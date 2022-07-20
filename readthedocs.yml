@@ -6,6 +6,7 @@ build:
     python: miniconda3-4.7
   jobs:
     pre_install:
+      - jupyter --version
       - npm install -g yarn
       - yarn install --frozen-lockfile
       - yarn build
