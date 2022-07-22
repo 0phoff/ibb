@@ -3,5 +3,5 @@
 
 export * from './version';
 export * from './imagecanvas';
-export * from './maincontainer';
+export * from './unlinkbox';
 export * from './repeatbutton';

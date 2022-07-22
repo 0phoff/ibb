@@ -3,14 +3,14 @@ from pathlib import Path
 from PIL import Image
 import numpy as np
 import brambox as bb
-from ._main_container import MainContainer
+from ._unlink_box import UnlinkBox
 from ._image_canvas import ImageCanvas
 from .._util import cast_alpha, box_to_coords, mask_to_coords
 
 __all__ = ['BramboxViewer']
 
 
-class BramboxViewer(MainContainer):
+class BramboxViewer(UnlinkBox):
     """ This widget can visualize a brambox dataset as bounding boxes drawn on top of the images.
     It's arguments work a lot like brambox's `brambox.util.BoxDrawer` class.
 
@@ -148,7 +148,7 @@ class BramboxViewer(MainContainer):
             ], layout=ipywidgets.Layout(justify_content='space-between', width=ww, margin=margin)),
         ]
 
-        super().__init__(items, layout=ipywidgets.Layout(width='100%', align_items='center'))
+        super().__init__(items, type='vbox', layout=ipywidgets.Layout(width='100%', align_items='center'))
 
         # Actions
         self.inp_idx.observe(self.observe_index, 'value')

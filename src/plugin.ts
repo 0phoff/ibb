@@ -7,7 +7,7 @@ import { ExportData, IJupyterWidgetRegistry } from '@jupyter-widgets/base';
 import { MODULE_NAME, MODULE_VERSION } from './version';
 
 import * as imageCanvasExports from './imagecanvas';
-import * as mainContainerExports from './maincontainer';
+import * as unlinkBoxExports from './unlinkbox';
 import * as repeatButtonExports from './repeatbutton';
 
 const EXTENSION_ID = 'ibb:plugin';
@@ -35,7 +35,7 @@ function activateWidgetExtension(
     version: MODULE_VERSION,
     exports: {
       ...imageCanvasExports,
-      ...(mainContainerExports as ExportData),
+      ...(unlinkBoxExports as ExportData),
       ...repeatButtonExports,
     },
   });

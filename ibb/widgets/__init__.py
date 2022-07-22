@@ -4,5 +4,5 @@ from ._cutout_viewer import CutoutViewer
 from ._patch_viewer import PatchViewer
 
 from ._image_canvas import ImageCanvas
-from ._main_container import MainContainer
+from ._unlink_box import UnlinkBox
 from ._repeat_button import RepeatButton

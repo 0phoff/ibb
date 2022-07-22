@@ -2,13 +2,13 @@ import ipywidgets
 from pathlib import Path
 import numpy as np
 from PIL import Image
-from ._main_container import MainContainer
+from ._unlink_box import UnlinkBox
 from ._image_canvas import ImageCanvas
 
 __all__ = ['ImageViewer']
 
 
-class ImageViewer(MainContainer):
+class ImageViewer(UnlinkBox):
     """ This widget is a basic image browser.
 
     Args:
@@ -45,7 +45,7 @@ class ImageViewer(MainContainer):
                 ipywidgets.HBox([self.btn_prev, self.btn_next], layout=ipywidgets.Layout(width=w)),
                 ipywidgets.HBox([self.inp_idx, self.lbl_len], layout=ipywidgets.Layout(width=w, justify_content='flex-end')),
             ], layout=ipywidgets.Layout(justify_content='space-between', width=str(width) + 'px', align_self='center')),
-        ])
+        ], type='vbox')
 
         # Actions
         self.inp_idx.observe(self.observe_index, 'value')
