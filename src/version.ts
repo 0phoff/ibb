@@ -12,7 +12,7 @@ const data = require('../package.json');
  * The html widget manager assumes that this is the same as the npm package
  * version number.
  */
-export const MODULE_VERSION = data.version;
+export const MODULE_VERSION = data.version.split('-')[0];
 
 /*
  * The current package name.

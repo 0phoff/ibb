@@ -7,6 +7,7 @@
 """
 Information about the frontend package of the widgets.
 """
+from ._version import version_info
 
-module_name = "ibb"
-module_version = "^2.1.0"
+module_name = 'ibb'
+module_version = '^' + '.'.join(map(str, version_info[:3]))
