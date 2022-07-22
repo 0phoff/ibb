@@ -8,6 +8,7 @@ import { MODULE_NAME, MODULE_VERSION } from './version';
 
 import * as imageCanvasExports from './imagecanvas';
 import * as mainContainerExports from './maincontainer';
+import * as repeatButtonExports from './repeatbutton';
 
 const EXTENSION_ID = 'ibb:plugin';
 
@@ -35,6 +36,7 @@ function activateWidgetExtension(
     exports: {
       ...imageCanvasExports,
       ...(mainContainerExports as ExportData),
+      ...repeatButtonExports,
     },
   });
 }
