@@ -6,3 +6,4 @@ from ._patch_viewer import PatchViewer
 from ._image_canvas import ImageCanvas
 from ._unlink_box import UnlinkBox
 from ._repeat_button import RepeatButton
+from ._image_controls import ImageControls
