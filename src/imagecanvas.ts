@@ -47,12 +47,9 @@ export class ImageCanvasView extends DOMWidgetView {
   private HOVER: PolyStyle;
   private CLICK: PolyStyle;
 
-  private width: number;
-  private height: number;
   private bg: HTMLCanvasElement;
   private fg: HTMLCanvasElement;
   private fx: HTMLCanvasElement;
-  private result: HTMLCanvasElement;
   private poly: Polygon[];
 
   private scale: number;
@@ -89,44 +86,44 @@ export class ImageCanvasView extends DOMWidgetView {
   }
 
   render_children() {
-    // Constants
-    this.width = this.model.get('width') - 2;
-    this.height = this.model.get('height') - 2;
-
     // Create elements
     this.bg = document.createElement('canvas');
-    this.bg.width = this.width;
-    this.bg.height = this.height;
-    this.bg.style.border = '1px solid lightgray';
-    this.result = document.createElement('canvas');
-    this.result.width = this.width;
-    this.result.height = this.height;
+    this.bg.style.width = '100%';
+    this.bg.style.height = '100%';
+
     if (this.POLY) {
       this.fg = document.createElement('canvas');
-      this.fg.width = this.width;
-      this.fg.height = this.height;
       this.fg.style.position = 'absolute';
-      this.fg.style.top = '0px';
-      this.fg.style.left = '0px';
-      this.fg.style.right = '0px';
-      this.fg.style.marginLeft = 'auto';
-      this.fg.style.marginRight = 'auto';
+      this.fg.style.width = '100%';
+      this.fg.style.height = '100%';
+      this.fg.style.top = '1px';
+      this.fg.style.left = '1px';
+      this.fg.style.right = '1px';
+      this.fg.style.bottom = '1px';
+
       this.fx = document.createElement('canvas');
-      this.fx.width = this.width;
-      this.fx.height = this.height;
       this.fx.style.position = 'absolute';
-      this.fx.style.top = '0px';
-      this.fx.style.left = '0px';
-      this.fx.style.right = '0px';
-      this.fx.style.marginLeft = 'auto';
-      this.fx.style.marginRight = 'auto';
+      this.fx.style.width = '100%';
+      this.fx.style.height = '100%';
+      this.fx.style.top = '1px';
+      this.fx.style.left = '1px';
+      this.fx.style.right = '1px';
+      this.fx.style.bottom = '1px';
+      this.fx.onclick = this.onclick.bind(this);
+      this.fx.onmousemove = this.onhover.bind(this);
+      this.fx.onmouseleave = () => {
+        this.model.set('hovered', null);
+        this.touch();
+      };
     }
 
     // Add to DOM
     const div = document.createElement('div');
-    div.style.textAlign = 'center';
-    div.style.minWidth = this.width + 'px';
-    div.style.minHeight = this.height + 'px';
+    div.style.position = 'relative';
+    div.style.width = this._convert_to_css_size(this.model.get('width'));
+    div.style.height = this._convert_to_css_size(this.model.get('height'));
+    div.style.border = '1px solid lightgray';
+    div.style.boxSizing = 'border-box';
     div.appendChild(this.bg);
     if (this.POLY) {
       div.appendChild(this.fg);
@@ -138,27 +135,41 @@ export class ImageCanvasView extends DOMWidgetView {
     }
     this.el.appendChild(div);
 
+    // Resize Observer
+    const observer = new ResizeObserver(([entry]) => this.draw(entry.contentRect.width, entry.contentRect.height));
+    observer.observe(div);
+
+    // Draw
+    const { width, height } = this.bg.getBoundingClientRect();
+    this.draw(width, height);
+  }
+
+  draw(width: number, height: number) {
+    this.bg.width = width;
+    this.bg.height = height;
     this.draw_image();
+
     if (this.POLY) {
+      this.fg.width = width;
+      this.fg.height = height;
       this.draw_polygons();
+
+      this.fx.width = width;
+      this.fx.height = height;
       this.draw_fx();
-      this.fx.onclick = this.onclick.bind(this);
-      this.fx.onmousemove = this.onhover.bind(this);
-      this.fx.onmouseleave = () => {
-        this.model.set('hovered', null);
-        this.touch();
-      };
     }
   }
 
   draw_image() {
-    const img = this.model.get('image'),
-      bgctx = this.bg.getContext('2d');
+    const img = this.model.get('image');
+    const width = this.bg.width;
+    const height = this.bg.height;
+    const bgctx = this.bg.getContext('2d');
     if (!bgctx) {
       return;
     }
 
-    bgctx.clearRect(0, 0, this.bg.width, this.bg.height);
+    bgctx.clearRect(0, 0, width, height);
     this.scale = 1;
     this.offset_x = 0;
     this.offset_y = 0;
@@ -168,11 +179,11 @@ export class ImageCanvasView extends DOMWidgetView {
 
       if (
         !this.ENLARGE &&
-        img.shape[1] <= this.width &&
-        img.shape[0] <= this.height
+        img.shape[1] <= width &&
+        img.shape[0] <= height
       ) {
-        this.offset_x = Math.floor((this.width - img.shape[1]) / 2);
-        this.offset_y = Math.floor((this.height - img.shape[0]) / 2);
+        this.offset_x = Math.floor((width - img.shape[1]) / 2);
+        this.offset_y = Math.floor((height - img.shape[0]) / 2);
         bgctx.putImageData(imgd, this.offset_x, this.offset_y);
       } else {
         const oc = document.createElement('canvas'),
@@ -182,15 +193,12 @@ export class ImageCanvasView extends DOMWidgetView {
         }
 
         // Compute scale and offset
-        this.scale = Math.min(
-          this.width / img.shape[1],
-          this.height / img.shape[0]
-        );
-        const scaled_w = img.shape[1] * this.scale,
-          scaled_h = img.shape[0] * this.scale;
+        this.scale = Math.min(width / img.shape[1], height / img.shape[0]);
+        const scaled_w = img.shape[1] * this.scale;
+        const scaled_h = img.shape[0] * this.scale;
 
-        this.offset_x = Math.floor((this.width - scaled_w) / 2);
-        this.offset_y = Math.floor((this.height - scaled_h) / 2);
+        this.offset_x = Math.floor((width - scaled_w) / 2);
+        this.offset_y = Math.floor((height - scaled_h) / 2);
 
         // Draw original image
         oc.width = img.shape[1];
@@ -251,28 +259,32 @@ export class ImageCanvasView extends DOMWidgetView {
     const save_val = this.model.get('save');
 
     if (save_val) {
-      const ctx = this.result.getContext('2d');
+      const { width, height } = this.bg.getBoundingClientRect();
+
+      const result = document.createElement('canvas');
+      result.width = width;
+      result.height = height;
+      const ctx = result.getContext('2d');
       if (!ctx) {
         return;
       }
 
       // Clear result canvas
-      ctx.clearRect(0, 0, this.width, this.height);
+      ctx.clearRect(0, 0, width, height);
 
       // Draw canvases
-      ctx.drawImage(this.bg, 0, 0, this.width, this.height);
+      ctx.drawImage(this.bg, 0, 0, width, height);
       if (this.POLY) {
-        ctx.drawImage(this.fg, 0, 0, this.width, this.height);
-        ctx.drawImage(this.fx, 0, 0, this.width, this.height);
+        ctx.drawImage(this.fg, 0, 0, width, height);
+        ctx.drawImage(this.fx, 0, 0, width, height);
       }
 
       // Open in new tab
-      const data = this.result.toDataURL('png');
+      const data = result.toDataURL('png');
       const w = window.open('about:blank');
       setTimeout(() => {
         if (w) {
-          w.document.body.appendChild(w.document.createElement('img')).src =
-            data;
+          w.document.body.appendChild(w.document.createElement('img')).src = data;
         }
       }, 0);
 
@@ -285,9 +297,11 @@ export class ImageCanvasView extends DOMWidgetView {
   }
 
   onclick(e: MouseEvent) {
-    const [x, y] = this._get_image_coord(e.clientX, e.clientY);
-    this.model.set('clicked', this._get_closest_poly(x, y));
-    this.touch();
+    if (this.model.comm_live) {
+      const [x, y] = this._get_image_coord(e.clientX, e.clientY);
+      this.model.set('clicked', this._get_closest_poly(x, y));
+      this.touch();
+    }
   }
 
   onhover(e: MouseEvent) {
@@ -383,5 +397,12 @@ export class ImageCanvasView extends DOMWidgetView {
       return null;
     }
     return candidate.idx;
+  }
+
+  _convert_to_css_size(size: number): string {
+    if (size <= 1) {
+      return Math.trunc(size * 100).toString() + '%';
+    }
+    return Math.trunc(size).toString() + 'px';
   }
 }

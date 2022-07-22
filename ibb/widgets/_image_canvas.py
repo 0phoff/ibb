@@ -2,8 +2,8 @@ import traitlets
 import traittypes
 import ipywidgets
 import numpy as np
-from ._frontend import module_name, module_version
-from ._util import cast_alpha
+from .._frontend import module_name, module_version
+from .._util import cast_alpha
 
 __all__ = ['ImageCanvas']
 
@@ -23,8 +23,8 @@ class ImageCanvas(ipywidgets.DOMWidget):
     It is also capable to provide hover/click statuses for the displayed polygons.
 
     Args:
-        width (Integer): Width of the widget in pixels; Default **750**
-        height (Integer): Height of the widget in pixels; Default **500**
+        width (Float): Width of the widget; Default **1**
+        height (Float): Height of the widget; Default **500**
         enable_rect (Boolean): Whether to enable the rectangle functionality; Default **True**
         auto_clear (Boolean): Whether to clear the polygons when drawing a new image; Default **True**
         enlarge (Boolean): Whether to enlarge an image to take up the most space in the canvas; Default **True**
@@ -41,6 +41,10 @@ class ImageCanvas(ipywidgets.DOMWidget):
         clicked (Integer): Index of the clicked rectangle
         hovered (Integer): Index of the hovered rectangle
         save (Bool): Save image and polygons
+
+    Note:
+        The `width` and `height` are interpreted as pixels if they are strictly greater than 1.
+        If they are smaller or equal to 1, we interpret them as percentages.
     """
     _model_module = traitlets.Unicode(module_name).tag(sync=True)
     _model_name = traitlets.Unicode('ImageCanvasModel').tag(sync=True)
@@ -50,8 +54,8 @@ class ImageCanvas(ipywidgets.DOMWidget):
     _view_module_version = traitlets.Unicode(module_version).tag(sync=True)
 
     # Settings
-    width = traitlets.Int(750).tag(sync=True)
-    height = traitlets.Int(500).tag(sync=True)
+    width = traitlets.Float(1).tag(sync=True)
+    height = traitlets.Float(500).tag(sync=True)
     enable_poly = traitlets.Bool(True).tag(sync=True)
     auto_clear = traitlets.Bool(True)
     enlarge = traitlets.Bool(True).tag(sync=True)

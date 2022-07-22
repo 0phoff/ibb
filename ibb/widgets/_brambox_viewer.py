@@ -5,7 +5,7 @@ import numpy as np
 import brambox as bb
 from ._main_container import MainContainer
 from ._image_canvas import ImageCanvas
-from ._util import cast_alpha, box_to_coords, mask_to_coords
+from .._util import cast_alpha, box_to_coords, mask_to_coords
 
 __all__ = ['BramboxViewer']
 

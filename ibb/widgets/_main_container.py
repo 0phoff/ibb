@@ -1,6 +1,6 @@
 import traitlets
 import ipywidgets
-from ._frontend import module_name, module_version
+from .._frontend import module_name, module_version
 
 
 @ipywidgets.register
