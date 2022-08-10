@@ -1,6 +1,6 @@
 {
   "name": "ibb",
-  "version": "2.2.0",
+  "version": "2.2.1-dev",
   "description": "Jupyter Widget Library for Brambox",
   "keywords": [
     "jupyter",
