@@ -1,3 +1,0 @@
-.hide-unlink-children .jupyter-widgets-disconnected::before {
-    content: none !important;
-}

@@ -23,8 +23,6 @@ class ImageCanvas(ipywidgets.DOMWidget):
     It is also capable to provide hover/click statuses for the displayed polygons.
 
     Args:
-        width (Float): Width of the widget; Default **1**
-        height (Float): Height of the widget; Default **500**
         enable_rect (Boolean): Whether to enable the rectangle functionality; Default **True**
         auto_clear (Boolean): Whether to clear the polygons when drawing a new image; Default **True**
         enlarge (Boolean): Whether to enlarge an image to take up the most space in the canvas; Default **True**
@@ -41,10 +39,6 @@ class ImageCanvas(ipywidgets.DOMWidget):
         clicked (Integer): Index of the clicked rectangle
         hovered (Integer): Index of the hovered rectangle
         save (Bool): Save image and polygons
-
-    Note:
-        The `width` and `height` are interpreted as pixels if they are strictly greater than 1.
-        If they are smaller or equal to 1, we interpret them as percentages.
     """
     _model_module = traitlets.Unicode(module_name).tag(sync=True)
     _model_name = traitlets.Unicode('ImageCanvasModel').tag(sync=True)
@@ -54,8 +48,6 @@ class ImageCanvas(ipywidgets.DOMWidget):
     _view_module_version = traitlets.Unicode(module_version).tag(sync=True)
 
     # Settings
-    width = traitlets.Float(1).tag(sync=True)
-    height = traitlets.Float(500).tag(sync=True)
     enable_poly = traitlets.Bool(True).tag(sync=True)
     auto_clear = traitlets.Bool(True)
     enlarge = traitlets.Bool(True).tag(sync=True)
@@ -72,7 +64,7 @@ class ImageCanvas(ipywidgets.DOMWidget):
     hovered = traitlets.Int(None, allow_none=True).tag(sync=True)
     save = traitlets.Bool(False).tag(sync=True)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, **kwargs):
         for attr in ('color', 'alpha', 'size'):
             if attr in kwargs:
                 kwargs[attr] = getattr(self, f'_validate_{attr}')({'value': kwargs[attr]})
@@ -89,7 +81,7 @@ class ImageCanvas(ipywidgets.DOMWidget):
             except Exception as err:
                 raise ValueError(f'Wrong value in click_style: {err}') from err
 
-        super().__init__(*args, **kwargs)
+        super().__init__(**kwargs)
 
     @traitlets.validate('image')
     def _validate_image(self, proposal):

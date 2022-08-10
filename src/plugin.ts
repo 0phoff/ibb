@@ -6,6 +6,7 @@ import { Widget } from '@phosphor/widgets';
 import { ExportData, IJupyterWidgetRegistry } from '@jupyter-widgets/base';
 import { MODULE_NAME, MODULE_VERSION } from './version';
 
+import '../css/ibb.css';
 import * as imageCanvasExports from './imagecanvas';
 import * as unlinkBoxExports from './unlinkbox';
 import * as repeatButtonExports from './repeatbutton';

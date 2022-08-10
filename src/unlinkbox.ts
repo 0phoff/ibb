@@ -3,7 +3,6 @@
 
 import { BoxModel, BoxView } from '@jupyter-widgets/controls';
 import { MODULE_NAME, MODULE_VERSION } from './version';
-import '../css/unlinkbox.css';
 
 export class UnlinkBoxModel extends BoxModel {
   static model_name = 'UnlinkBoxModel';
@@ -41,6 +40,6 @@ export class UnlinkBoxView extends BoxView {
     }
 
 
-    this.pWidget.addClass('hide-unlink-children');
+    this.pWidget.addClass('ibb-unlink');
   }
 }

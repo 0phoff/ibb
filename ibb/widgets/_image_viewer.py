@@ -15,10 +15,8 @@ class ImageViewer(Viewer):
             This list-like (iterable with len) should contain your images (See Note below)
         lambda_image (function, optional):
             This function gets the value from the `images` and should return a numpy array that is readable by the ImageCanvas; Default **See Note**
-        width (Integer, optional):
-            width of the widget in pixels; Default **100%**
-        height (Integer, optional):
-            height of the widget in pixels; Default **500px**
+        **kwargs (dict):
+            Extra keyword arguments that can be passed to :class:`~ibb.widgets.Viewer`
 
     Note:
         The default `lambda_image` function can work with 2 types of data:
@@ -43,12 +41,12 @@ class ImageViewer(Viewer):
         else:
             return np.asarray(img)
 
-    def on_index(self, value):
-        img = self.images[value]
+    def on_index(self, change):
+        img = self.images[change['new']]
 
         if isinstance(img, (str, Path)):
-            self.w_img_label.value = str(img)
+            self.header[0].value = str(img)
         else:
-            self.w_img_label.value = ''
+            self.header[0].value = ''
 
-        self.w_img_cvs.image = self.get_img(img)
+        self.main[0].image = self.get_img(img)

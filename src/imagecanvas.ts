@@ -67,8 +67,6 @@ export class ImageCanvasView extends DOMWidgetView {
     this.CLICK = this.model.get('click_style');
 
     // PY -> JS
-    this.model.on('change:width', this.render_children, this);
-    this.model.on('change:height', this.render_children, this);
     this.model.on('change:image', this.draw_image, this);
     this.model.on('change:save', this.save, this);
     if (this.POLY) {
@@ -118,26 +116,19 @@ export class ImageCanvasView extends DOMWidgetView {
     }
 
     // Add to DOM
-    const div = document.createElement('div');
-    div.style.position = 'relative';
-    div.style.width = this._convert_to_css_size(this.model.get('width'));
-    div.style.height = this._convert_to_css_size(this.model.get('height'));
-    div.style.border = '1px solid lightgray';
-    div.style.boxSizing = 'border-box';
-    div.appendChild(this.bg);
-    if (this.POLY) {
-      div.appendChild(this.fg);
-      div.appendChild(this.fx);
-    }
-
+    this.pWidget.addClass('ibb-image-canvas');
     while (this.el.firstChild) {
       this.el.firstChild.remove();
     }
-    this.el.appendChild(div);
+    this.el.appendChild(this.bg);
+    if (this.POLY) {
+      this.el.appendChild(this.fg);
+      this.el.appendChild(this.fx);
+    }
 
     // Resize Observer
     const observer = new ResizeObserver(([entry]) => this.draw(entry.contentRect.width, entry.contentRect.height));
-    observer.observe(div);
+    observer.observe(this.el);
 
     // Draw
     const { width, height } = this.bg.getBoundingClientRect();
@@ -237,20 +228,20 @@ export class ImageCanvasView extends DOMWidgetView {
   }
 
   draw_fx() {
-    const hover_idx = this.model.get('hovered'),
-      click_idx = this.model.get('clicked'),
-      fxctx = this.fx.getContext('2d');
+    const hover_idx = this.model.get('hovered');
+    const click_idx = this.model.get('clicked');
+    const fxctx = this.fx.getContext('2d');
     if (!fxctx) {
       return;
     }
 
     fxctx.clearRect(0, 0, this.fx.width, this.fx.height);
     if (this.poly) {
-      if (hover_idx !== null && hover_idx < this.poly.length) {
-        this._draw_poly(fxctx, this.poly[hover_idx], this.HOVER);
-      }
       if (click_idx !== null && click_idx < this.poly.length) {
         this._draw_poly(fxctx, this.poly[click_idx], this.CLICK);
+      }
+      if (hover_idx !== null && hover_idx < this.poly.length) {
+        this._draw_poly(fxctx, this.poly[hover_idx], this.HOVER, true);
       }
     }
   }
@@ -310,8 +301,8 @@ export class ImageCanvasView extends DOMWidgetView {
     this.touch();
   }
 
-  _draw_poly(ctx: CanvasRenderingContext2D, poly: Polygon, style?: PolyStyle) {
-    const coords = poly.coords.map(([x, y]) => [
+  _draw_poly(ctx: CanvasRenderingContext2D, poly: Polygon, style?: PolyStyle, label = false) {
+    const coords: Polygon['coords'] = poly.coords.map(([x, y]) => [
       this.offset_x + x * this.scale,
       this.offset_y + y * this.scale,
     ]);
@@ -338,6 +329,21 @@ export class ImageCanvasView extends DOMWidgetView {
 
     ctx.stroke();
     ctx.fill();
+
+    // Text
+    if (label && poly.label) {
+      const centroid = centroid_polygon({coords});
+
+      ctx.font = '14px sans-serif';
+      ctx.textBaseline = 'middle';
+      ctx.textAlign = 'center';
+      ctx.fillStyle = ctx.strokeStyle;
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 4;
+
+      ctx.strokeText(poly.label, ...centroid);
+      ctx.fillText(poly.label, ...centroid);
+    }
   }
 
   _get_image_coord(x: number, y: number) {
@@ -364,13 +370,16 @@ export class ImageCanvasView extends DOMWidgetView {
     type SmallestPolygon = IndexedPolygon & { area: number };
     type ClosestPolygon = SmallestPolygon & { distance: number };
 
+
     const candidate = this.poly
       // Remember original index
       .map((poly, idx) => {
         return { idx, poly };
       })
+
       // Filter boxes based on mouse position
       .filter(({ poly }) => inside_polygon([x, y], poly))
+
       // Reduce to find smallest box
       .reduce((smallest: SmallestPolygon[], current) => {
         const area = area_polygon(current.poly);
@@ -382,6 +391,7 @@ export class ImageCanvasView extends DOMWidgetView {
         }
         return smallest;
       }, [])
+
       // Reduce to position closest to center
       .reduce((closest: ClosestPolygon | null, current: SmallestPolygon) => {
         const [cx, cy] = centroid_polygon(current.poly);
@@ -397,12 +407,5 @@ export class ImageCanvasView extends DOMWidgetView {
       return null;
     }
     return candidate.idx;
-  }
-
-  _convert_to_css_size(size: number): string {
-    if (size <= 1) {
-      return Math.trunc(size * 100).toString() + '%';
-    }
-    return Math.trunc(size).toString() + 'px';
   }
 }

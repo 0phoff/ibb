@@ -4,10 +4,11 @@ export type PolyStyle = {
   size?: number;
 };
 
-type Coordinate = [number, number];
+export type Coordinate = [number, number];
 
 export type Polygon = PolyStyle & {
   coords: Coordinate[];
+  label?: string;
 };
 
 export function centroid_polygon(polygon: Polygon): Coordinate {
@@ -54,8 +55,7 @@ export function area_polygon(polygon: Polygon): number {
   let area = 0;
 
   for (let i = 0, j = coords.length - 1; i < coords.length; i++) {
-    area +=
-      (coords[j][0] + coords[i][0]) * Math.abs(coords[j][1] - coords[i][1]);
+    area += (coords[j][0] * coords[i][1]) - (coords[j][1] * coords[i][0]);
     j = i;
   }
 

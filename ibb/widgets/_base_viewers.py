@@ -28,7 +28,7 @@ class Viewer(UnlinkBox):
         items = [
             ipywidgets.HBox(
                 self.__header,
-                layout=ipywidgets.Layout(grid_area='header', align_items='flex-end', justify_content='space-between'),
+                layout=ipywidgets.Layout(grid_area='header', justify_content='space-between', align_items='center'),
             ),
 
             ipywidgets.HBox(
@@ -38,7 +38,7 @@ class Viewer(UnlinkBox):
 
             ipywidgets.HBox(
                 self.__footer,
-                layout=ipywidgets.Layout(grid_area='footer', align_items='flex-start', justify_content='space-between'),
+                layout=ipywidgets.Layout(grid_area='footer', justify_content='space-between', align_items='center'),
             ),
         ]
 
@@ -56,7 +56,7 @@ class Viewer(UnlinkBox):
             self.add_class('ibb-side')
 
         # Start first
-        self.redraw()
+        self.on_index(0)
 
     def __init_header__(self, kwargs):
         """
@@ -98,38 +98,28 @@ class Viewer(UnlinkBox):
         Args:
             total (number, kw-only): Maximum number for the :class:`~ibb.widgets.IndexCounter`; Default **1**
             control_total (number, kw-only): Maximum number for the :class:`~ibb.widgets.ImageControls`; Default **value from total**
-
-        Warning:
-            If you override this function, you should only ever add to it and still call ``super().__init_footer__(kwargs)``, as the class would otherwise break !
         """
         w_ctrl = ImageControls(
             total=kwargs.get('control_total', kwargs.get('total', 1)),
-            name=kwargs.get('control_name', 'image'),
+            name='image',
         )
+        w_ctrl.observe(lambda change: self.on_control(change['new']), 'index')
 
         self.__w_idx = IndexCounter(
             total=kwargs.get('total', 1),
         )
-
-        def _on_control(change):
-            self.__w_idx.index = self.control_to_index(change['new'])
-
-        def _on_index(change):
-            w_ctrl.index = self.index_to_control(change['new'])
-
-        self.__w_idx.observe(_on_index, 'index')
-        w_ctrl.observe(_on_control, 'index')
-        self.__w_idx.observe(self.on_index, 'index')
+        self.__w_idx.observe(lambda change: self.on_index(change['new']), 'index')
 
         return [w_ctrl, self.__w_idx]
 
-    def control_to_index(self, value):
-        return value
+    def on_control(self, value):
+        """
+        Method that runs whenever the index of the button controls change. |br|
+        The default implementation simply sets the index input to the new control value, which in turn runs the :meth:`Viewer.on_index` method.
+        """
+        self.__w_idx.index = value
 
-    def index_to_control(self, value):
-        return value
-
-    def on_index(self, change):
+    def on_index(self, value):
         """
         Method that runs whenever the index number changes. |br|
         This method should be implemented by every widget that inherits from this class.
@@ -155,13 +145,3 @@ class Viewer(UnlinkBox):
     def footer(self):
         """ Returns a tuple with the elements from :meth:`Viewer.__init_footer__`. """
         return self.__footer
-
-    def redraw(self):
-        """ Manually fire :meth:`Viewer.on_index`. """
-        self.on_index({
-            'new': self.__w_idx.index,
-            'old': self.__w_idx.index,
-            'type': 'change',
-            'name': 'index',
-            'owner': self.__w_idx,
-        })
