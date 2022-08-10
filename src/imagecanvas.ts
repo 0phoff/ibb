@@ -1,11 +1,7 @@
 // Copyright (c) 0phoff
 // Distributed under the terms of the Modified BSD License.
 
-import {
-  DOMWidgetModel,
-  DOMWidgetView,
-  ISerializers,
-} from '@jupyter-widgets/base';
+import { DOMWidgetModel, DOMWidgetView, ISerializers } from '@jupyter-widgets/base';
 
 import type { Polygon, PolyStyle } from './polygons';
 import { centroid_polygon, inside_polygon, area_polygon } from './polygons';
@@ -168,11 +164,7 @@ export class ImageCanvasView extends DOMWidgetView {
     if (img) {
       const imgd = new ImageData(img.data, img.shape[1], img.shape[0]);
 
-      if (
-        !this.ENLARGE &&
-        img.shape[1] <= width &&
-        img.shape[0] <= height
-      ) {
+      if (!this.ENLARGE && img.shape[1] <= width && img.shape[0] <= height) {
         this.offset_x = Math.floor((width - img.shape[1]) / 2);
         this.offset_y = Math.floor((height - img.shape[0]) / 2);
         bgctx.putImageData(imgd, this.offset_x, this.offset_y);
@@ -197,17 +189,7 @@ export class ImageCanvasView extends DOMWidgetView {
         octx.putImageData(imgd, 0, 0);
 
         // Draw rescaled image
-        bgctx.drawImage(
-          oc,
-          0,
-          0,
-          img.shape[1],
-          img.shape[0],
-          this.offset_x,
-          this.offset_y,
-          scaled_w,
-          scaled_h
-        );
+        bgctx.drawImage(oc, 0, 0, img.shape[1], img.shape[0], this.offset_x, this.offset_y, scaled_w, scaled_h);
       }
     }
   }
@@ -302,10 +284,7 @@ export class ImageCanvasView extends DOMWidgetView {
   }
 
   _draw_poly(ctx: CanvasRenderingContext2D, poly: Polygon, style?: PolyStyle, label = false) {
-    const coords: Polygon['coords'] = poly.coords.map(([x, y]) => [
-      this.offset_x + x * this.scale,
-      this.offset_y + y * this.scale,
-    ]);
+    const coords: Polygon['coords'] = poly.coords.map(([x, y]) => [this.offset_x + x * this.scale, this.offset_y + y * this.scale]);
 
     // Draw
     ctx.beginPath();
@@ -319,8 +298,7 @@ export class ImageCanvasView extends DOMWidgetView {
     if (style) {
       ctx.strokeStyle = style.color || poly.color || this.COLOR;
       ctx.lineWidth = style.size || poly.size || this.SIZE;
-      ctx.fillStyle =
-        ctx.strokeStyle + (style.alpha || poly.alpha || this.ALPHA);
+      ctx.fillStyle = ctx.strokeStyle + (style.alpha || poly.alpha || this.ALPHA);
     } else {
       ctx.strokeStyle = poly.color || this.COLOR;
       ctx.lineWidth = poly.size || this.SIZE;
@@ -332,7 +310,7 @@ export class ImageCanvasView extends DOMWidgetView {
 
     // Text
     if (label && poly.label) {
-      const centroid = centroid_polygon({coords});
+      const centroid = centroid_polygon({ coords });
 
       ctx.font = '14px sans-serif';
       ctx.textBaseline = 'middle';
@@ -369,7 +347,6 @@ export class ImageCanvasView extends DOMWidgetView {
     };
     type SmallestPolygon = IndexedPolygon & { area: number };
     type ClosestPolygon = SmallestPolygon & { distance: number };
-
 
     const candidate = this.poly
       // Remember original index

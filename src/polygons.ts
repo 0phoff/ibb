@@ -39,8 +39,7 @@ export function inside_polygon(point: Coordinate, polygon: Polygon): boolean {
       yi = coords[i][1];
     const xj = coords[j][0],
       yj = coords[j][1];
-    const intersect =
-      yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
+    const intersect = yi > y !== yj > y && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi;
 
     if (intersect) {
       inside = !inside;
@@ -55,7 +54,7 @@ export function area_polygon(polygon: Polygon): number {
   let area = 0;
 
   for (let i = 0, j = coords.length - 1; i < coords.length; i++) {
-    area += (coords[j][0] * coords[i][1]) - (coords[j][1] * coords[i][0]);
+    area += coords[j][0] * coords[i][1] - coords[j][1] * coords[i][0];
     j = i;
   }
 

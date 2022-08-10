@@ -39,7 +39,6 @@ export class UnlinkBoxView extends BoxView {
       this.pWidget.addClass('widget-hbox');
     }
 
-
     this.pWidget.addClass('ibb-unlink');
   }
 }
