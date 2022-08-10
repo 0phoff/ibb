@@ -7,7 +7,7 @@ from ._repeat_button import RepeatButton
 class ImageControls(UnlinkBox):
     """
     This widget shows 6 different buttons to control an index with regards to a total length. |br|
-    It's intended use case is to control the image that is displayed in other IBB widgets.
+    Its intended use case is to control the image that is displayed in other IBB widgets.
 
     Args:
         total (int): Maximum number the controls index can reach

@@ -38,6 +38,10 @@
     "footer footer";
 }
 
+.ibb-viewer.patch-viewer {
+  height: 532px;
+}
+
 .ibb-viewer.ibb-side {
   grid-template-areas:
     "header a"
@@ -69,11 +73,11 @@
 }
 
 .ibb-infobar table tr:nth-child(2n+1) {
-  background: var(--jp-rendermime-table-row-background);
+  background: var(--jp-rendermime-table-row-background, #f5f5f5);
 }
 
 .ibb-infobar table tr:hover {
-  background: var(--jp-rendermime-table-row-hover-background);
+  background: var(--jp-rendermime-table-row-hover-background, rgba(66, 165, 245, 0.2));
 }
 
 .ibb-infobar table tr td {
@@ -93,7 +97,7 @@
 .ibb-patch-control {
   width: fit-content;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   place-items: center;
 }
 
@@ -113,6 +117,6 @@
 }
 
 .ibb-patch-control button:nth-child(4) {
-  grid-row: 3;
+  grid-row: 2;
   grid-column: 2;
 }

@@ -5,7 +5,7 @@ define(function() {
     window['requirejs'].config({
         map: {
             '*': {
-                '{{ cookiecutter.npm_package_name }}': 'nbextensions/{{ cookiecutter.python_package_name }}/index',
+                'ibb': 'nbextensions/ibb/index',
             },
         }
     });

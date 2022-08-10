@@ -158,6 +158,7 @@ class BramboxViewer(Viewer):
             self.main[0].polygons = None
 
     def on_index(self, change):
+        """ """
         self.header[0].value, self.main[0].image, self.current_all_boxes = self.get_data(change['new'])
 
         if self.conf_enabled:

@@ -100,6 +100,7 @@ setup_args = dict(
     extras_require={
         'examples': [
             'brambox[segment]',
+            'tables',
         ],
         'docs': [
             'jupyter_sphinx',

@@ -18,7 +18,8 @@ def array_to_binary(ar, obj=None):
 
 @ipywidgets.register
 class ImageCanvas(ipywidgets.DOMWidget):
-    """ This widget is capable of displaying numpy array as images and draw polygons on them.
+    """
+    This widget is capable of displaying numpy array as images and draw polygons on them.
     It scales the images to fit in the view and ensures the polygons are scaled accordingly as well.
     It is also capable to provide hover/click statuses for the displayed polygons.
 
@@ -33,9 +34,8 @@ class ImageCanvas(ipywidgets.DOMWidget):
         click_style (Dict): Default click style (can contain color,alpha and/or size properties); Default **None**
 
     Attributes:
-    These attributes can be set and read from your python code to influence the canvas.
-        image (numpy.ndarray): Image data in HWC order. See _validate_image for more information
-        polygons (dict): polygons to draw. See _validate_polygons for more information
+        image (numpy.ndarray): Image data in HWC order. See :meth:`ImageCanvas.validate_image` for more information
+        polygons (dict): polygons to draw. See :meth:`ImageCanvas.validate_polygons` for more information
         clicked (Integer): Index of the clicked rectangle
         hovered (Integer): Index of the hovered rectangle
         save (Bool): Save image and polygons
@@ -84,8 +84,9 @@ class ImageCanvas(ipywidgets.DOMWidget):
         super().__init__(**kwargs)
 
     @traitlets.validate('image')
-    def _validate_image(self, proposal):
-        """ Validate correct image shape and dtype and cast to RGBA uint8 (0-255)
+    def validate_image(self, proposal):
+        """
+        Validate correct image shape and dtype and cast to RGBA uint8 (0-255)
 
         Valid data types:
             - RGBA uint8 (0-255)
@@ -130,8 +131,9 @@ class ImageCanvas(ipywidgets.DOMWidget):
             raise TypeError(f'Image type not supported [{img.dtype}]')
 
     @traitlets.validate('polygons')
-    def _validate_polygons(self, proposal):
-        """ Validate correct polygon data
+    def validate_polygons(self, proposal):
+        """
+        Validate correct polygon data
 
         Valid data types:
             - list of dictionaries with keys: coords, color<optional>, alpha<optional>, size<optional>

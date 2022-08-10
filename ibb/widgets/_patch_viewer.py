@@ -101,6 +101,8 @@ class PatchViewer(BramboxViewer):
             **kwargs,
         )
 
+        self.add_class('patch-viewer')
+
     def __init_footer__(self, kwargs):
         w_img_ctrl, w_index_ctrl = super().__init_footer__(kwargs)
         w_patch_ctrl = PatchControls(total_width=self.img_data[0][1], total_height=self.img_data[0][2])

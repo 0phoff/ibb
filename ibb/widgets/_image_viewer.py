@@ -42,6 +42,7 @@ class ImageViewer(Viewer):
             return np.asarray(img)
 
     def on_index(self, change):
+        """ """
         img = self.images[change['new']]
 
         if isinstance(img, (str, Path)):
