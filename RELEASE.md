@@ -6,6 +6,7 @@ For more information, visit the [cookiecutter page](https://github.com/jupyter-w
 ## Releasing your initial packages:
 
 1. `git checkout develop`
+1. Make sure all changes are pushed to remote and CI is OK.
 1. Make sure examples work in Jupyter Lab.
 1. Make sure examples work in Jupyter Notebook.
    For each notebook, follow this procedure:
@@ -26,7 +27,6 @@ For more information, visit the [cookiecutter page](https://github.com/jupyter-w
    git merge --ff-only develop
    git checkout develop
    ```
-1. Create a release commit.
 1. Relase the npm packages:
    ```bash
    npm login    # Optional, if not already done
@@ -43,7 +43,7 @@ For more information, visit the [cookiecutter page](https://github.com/jupyter-w
    ```
 1. Tag the release commit: `git tag vX.Y.Z`.
 1. Update the version in `_version.py` and `package.json` (back to 'dev' versions).
-1. Commit the changes.
+1. Commit the changes in `develop`.
 1. Push online `git push --all && git push --tags`.
 1. Verify [PyPi](https://pypi.org/project/ibb), [NPM](https://www.npmjs.com/package/ibb) and [readthedocs](https://ibb.readthedocs.io).
    Note that some may take a while to show the changes.
