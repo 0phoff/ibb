@@ -207,24 +207,25 @@ if not on_rtd:  # only import and set the theme if we're building docs locally
 #
 nbsphinx_allow_errors = True # exception ipstruct.py ipython_genutils
 nbsphinx_prolog = """
-{% set snake_case = env.docname.split('/')|last %}
-{% set camel_case = snake_case.split('_')|map('capitalize')|join %}
+{% set snake_case_01 = env.docname.split('/')|last %}
+{% set snake_case_02 = snake_case_01.split('--')|last %}
+{% set camel_case = snake_case_02.split('_')|map('capitalize')|join %}
 
 -------------------------
 {{ camel_case | escape }}
 -------------------------
 
-.. currentmodule:: ibb
+.. currentmodule:: ibb.widgets
 
 .. autoclass:: {{ camel_case }}
    :members:
 
 Examples
---------
+^^^^^^^^
 
 .. warning::
 
-    Note that the widgets are not responding, as we do not have a python backend running!
+    Note that the widgets are not responding as we do not have a python backend running!
 
 """
 
