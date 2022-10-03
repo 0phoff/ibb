@@ -5,7 +5,7 @@
 # Distributed under the terms of the Modified BSD License.
 
 from ._version import __version__, version_info
-from .widgets import ImageViewer, BramboxViewer, CutoutViewer, PatchViewer
+from .widgets import ImageViewer, BramboxViewer, TorchViewer, CutoutViewer, PatchViewer
 
 
 def _jupyter_labextension_paths():

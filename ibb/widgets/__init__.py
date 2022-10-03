@@ -1,5 +1,6 @@
 from ._image_viewer import ImageViewer
 from ._brambox_viewer import BramboxViewer
+from ._torch_viewer import TorchViewer
 from ._cutout_viewer import CutoutViewer
 from ._patch_viewer import PatchViewer
 
