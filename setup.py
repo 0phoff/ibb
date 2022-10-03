@@ -96,11 +96,14 @@ setup_args = dict(
         'ipywidgets>=7.0.0',
         'pillow',
         'traittypes',
+        'brambox>2.0.0',
     ],
     extras_require={
         'examples': [
             'brambox[segment]',
             'tables',
+            'torch',
+            'torchvision',
         ],
         'docs': [
             'jupyter_sphinx',
