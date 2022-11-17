@@ -27,6 +27,7 @@ For more information, visit the [cookiecutter page](https://github.com/jupyter-w
    git merge --ff-only develop
    git checkout develop
    ```
+1. `yarn build` (do not forget to activate the correct python environment)
 1. Relase the npm packages:
    ```bash
    npm login    # Optional, if not already done
