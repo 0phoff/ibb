@@ -5,13 +5,20 @@ Installation
 ============
 
 
-The simplest way to install ibb is via pip::
+The simplest way to install ibb is via pip or conda::
 
     pip install ibb
-
-or via conda::
-
     conda install ibb
+
+.. warning::
+   The latest version of IBB only works with `ipywidgets 8`.
+
+   ========== ===
+   ipywidgets IBB
+   ---------- ---
+   >=7, <8    pip install ibb==2.4.0
+   >=8, <9    pip install ibb
+   ========== ===
 
 
 If you installed via pip and notebook version < 5.3, you will also have to install / configure the front-end extension as well.
