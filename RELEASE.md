@@ -17,7 +17,7 @@ For more information, visit the [cookiecutter page](https://github.com/jupyter-w
      - Save and Close notebook
 1. Create documentation and check everything looks fine locally.
 1. Check linting for JS code: `yarn run lint`.
-1. Change versions in `_version.py` and `package.json`.
+1. Change versions in `_version.py`, `package.json` and `pyproject.toml`.
    Make sure you input exactly the same numbers !
 1. Commit version changes on both `develop` and `master`:
    ```
@@ -43,7 +43,7 @@ For more information, visit the [cookiecutter page](https://github.com/jupyter-w
    twine upload dist/*
    ```
 1. Tag the release commit: `git tag vX.Y.Z`.
-1. Update the version in `_version.py` and `package.json` (back to 'dev' versions).
+1. Update the version in `_version.py`, `package.json` and `pyproject.toml` (back to 'dev' versions).
 1. Commit the changes in `develop`.
 1. Push online `git push --all && git push --tags`.
 1. Verify [PyPi](https://pypi.org/project/ibb), [NPM](https://www.npmjs.com/package/ibb) and [readthedocs](https://ibb.readthedocs.io).
