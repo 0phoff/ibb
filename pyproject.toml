@@ -1,3 +1,97 @@
 [build-system]
-requires = ["jupyter_packaging==0.7.9", "jupyterlab==3.*", "setuptools>=40.8.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = [
+    "hatchling>=1.3.1",
+    "jupyterlab==3.*",
+]
+build-backend = "hatchling.build"
+
+
+[project]
+name = "ibb"
+description = "Jupyter Widget Library for Brambox"
+readme = "README.md"
+license = { file = "LICENSE.txt" }
+requires-python = ">=3.7"
+authors = [
+    { name = "0phoff", email = "0phoff@users.noreply.github.com" },
+]
+keywords = [
+    "IPython",
+    "Jupyter",
+    "Widgets",
+]
+classifiers = [
+    "Framework :: Jupyter",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
+dependencies = [
+    "ipywidgets>=8,<9",
+    "pillow",
+    "traittypes",
+    "brambox>2.0.0",
+]
+version = "3.0.0-dev"
+
+[project.optional-dependencies]
+docs = [
+    "jupyter_sphinx",
+    "nbsphinx",
+    "nbsphinx-link",
+    "pypandoc",
+    "recommonmark",
+    "sphinx>=1.5",
+    "sphinx_rtd_theme",
+]
+examples = [
+    "brambox[segment]",
+    "tables",
+    "torch",
+    "torchvision",
+]
+
+[project.urls]
+Homepage = "https://github.com/0phoff/ibb"
+
+[tool.hatch.build]
+artifacts = [
+    "ibb/nbextension/index.*",
+    "ibb/labextension/*.tgz",
+    "ibb/labextension",
+]
+
+[tool.hatch.build.targets.wheel.shared-data]
+"ibb/nbextension" = "share/jupyter/nbextensions/ibb"
+"ibb/labextension" = "share/jupyter/labextensions/ibb"
+"./install.json" = "share/jupyter/labextensions/ibb/install.json"
+"./ibb.json" = "etc/jupyter/nbconfig/notebook.d/ibb.json"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+    ".github",
+]
+
+[tool.hatch.build.hooks.jupyter-builder]
+build-function = "hatch_jupyter_builder.npm_builder"
+ensured-targets = [
+    "ibb/nbextension/index.js",
+    "ibb/labextension/package.json",
+]
+skip-if-exists = [
+    "ibb/nbextension/index.js",
+    "ibb/labextension/package.json",
+]
+dependencies = [
+    "hatch-jupyter-builder>=0.5.0",
+]
+
+[tool.hatch.build.hooks.jupyter-builder.build-kwargs]
+path = "."
+build_cmd = "build:prod"

@@ -26,7 +26,7 @@
 
 
 /* VIEWER */
-.ibb-viewer {
+.jupyter-widgets.ibb-viewer {
   width: 100%;
   height: 500px;
   grid-template-columns: auto 40px;
@@ -49,7 +49,7 @@
     "footer b";
 }
 
-.ibb-infobar {
+.jupyter-widgets.ibb-infobar {
   border: 1px solid lightgray;
   border-left: none;
   margin: 0;
@@ -94,7 +94,7 @@
 }
 
 /* PATCH CONTROL */
-.ibb-patch-control {
+.jupyter-widgets.ibb-patch-control {
   width: fit-content;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, 1fr);

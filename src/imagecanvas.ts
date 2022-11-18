@@ -112,7 +112,7 @@ export class ImageCanvasView extends DOMWidgetView {
     }
 
     // Add to DOM
-    this.pWidget.addClass('ibb-image-canvas');
+    this.luminoWidget.addClass('ibb-image-canvas');
     while (this.el.firstChild) {
       this.el.firstChild.remove();
     }

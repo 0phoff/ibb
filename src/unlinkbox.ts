@@ -31,14 +31,14 @@ export class UnlinkBoxView extends BoxView {
 
     const type = this.model.get('type');
     if (type === 'grid') {
-      this.pWidget.addClass('widget-gridbox');
-      this.pWidget.removeClass('widget-box');
+      this.luminoWidget.addClass('widget-gridbox');
+      this.luminoWidget.removeClass('widget-box');
     } else if (type === 'vbox') {
-      this.pWidget.addClass('widget-vbox');
+      this.luminoWidget.addClass('widget-vbox');
     } else {
-      this.pWidget.addClass('widget-hbox');
+      this.luminoWidget.addClass('widget-hbox');
     }
 
-    this.pWidget.addClass('ibb-unlink');
+    this.luminoWidget.addClass('ibb-unlink');
   }
 }

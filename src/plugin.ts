@@ -1,8 +1,8 @@
 // Copyright (c) 0phoff
 // Distributed under the terms of the Modified BSD License.
 
-import { Application, IPlugin } from '@phosphor/application';
-import { Widget } from '@phosphor/widgets';
+import { Application, IPlugin } from '@lumino/application';
+import { Widget } from '@lumino/widgets';
 import { ExportData, IJupyterWidgetRegistry } from '@jupyter-widgets/base';
 import { MODULE_NAME, MODULE_VERSION } from './version';
 
@@ -18,9 +18,7 @@ const ibbPlugin: IPlugin<Application<Widget>, void> = {
   requires: [IJupyterWidgetRegistry],
   activate: activateWidgetExtension,
   autoStart: true,
-} as unknown as IPlugin<Application<Widget>, void>;
-// the "as unknown as ..." typecast above is solely to support JupyterLab 1
-// and 2 in the same codebase and should be removed when we migrate to Lumino.
+} as IPlugin<Application<Widget>, void>;
 
 export default ibbPlugin;
 
