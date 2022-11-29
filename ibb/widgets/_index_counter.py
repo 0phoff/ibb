@@ -15,7 +15,7 @@ class IndexCounter(UnlinkBox):
     index = traitlets.Int()
 
     def __init__(self, total, **kwargs):
-        self.input = ipywidgets.BoundedIntText(min=1, max=total, layout=ipywidgets.Layout(max_width='75px', flex='0 1 auto'))
+        self.input = ipywidgets.BoundedIntText(min=1, max=total)
         self.label = ipywidgets.Label(f'/ {total}')
         self.total = total
 
@@ -25,6 +25,8 @@ class IndexCounter(UnlinkBox):
             self.input,
             self.label,
         ], **kwargs)
+
+        self.add_class('ibb-index-counter')
 
     @traitlets.validate('total')
     def validate_total(self, proposal):

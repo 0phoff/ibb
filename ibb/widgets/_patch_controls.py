@@ -1,4 +1,3 @@
-import ipywidgets
 import traitlets
 from ._unlink_box import UnlinkBox
 from ._repeat_button import RepeatButton
@@ -19,15 +18,13 @@ class PatchControls(UnlinkBox):
     frequency = traitlets.Int(5)
 
     def __init__(self, **kwargs):
-        btn_layout = ipywidgets.Layout(width='var(--jp-widgets-inline-height)', padding='0')
-
         self.btn_up = RepeatButton(
             icon='caret-up',
             tooltip='Move patch up',
             delay=0.5,
             frequency=self.frequency,
-            layout=btn_layout,
         )
+        self.btn_up.add_class('ibb-square-button')
         self.btn_up.on_click(self.click_up)
 
         self.btn_down = RepeatButton(
@@ -35,8 +32,8 @@ class PatchControls(UnlinkBox):
             tooltip='Move patch down',
             delay=0.5,
             frequency=self.frequency,
-            layout=btn_layout,
         )
+        self.btn_down.add_class('ibb-square-button')
         self.btn_down.on_click(self.click_down)
 
         self.btn_left = RepeatButton(
@@ -44,8 +41,8 @@ class PatchControls(UnlinkBox):
             tooltip='Move patch left',
             delay=0.5,
             frequency=self.frequency,
-            layout=btn_layout,
         )
+        self.btn_left.add_class('ibb-square-button')
         self.btn_left.on_click(self.click_left)
 
         self.btn_right = RepeatButton(
@@ -53,8 +50,8 @@ class PatchControls(UnlinkBox):
             tooltip='Move patch right',
             delay=0.5,
             frequency=self.frequency,
-            layout=btn_layout,
         )
+        self.btn_right.add_class('ibb-square-button')
         self.btn_right.on_click(self.click_right)
 
         super().__init__(

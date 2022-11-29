@@ -1,3 +1,10 @@
+/* BUTTONS */
+.widget-button.ibb-square-button {
+  width: var(--jp-widgets-inline-height);
+  padding: 0;
+}
+
+
 /* UNLINKBOX */
 .ibb-unlink .jupyter-widgets-disconnected::before {
   content: none !important;
@@ -25,6 +32,13 @@
 }
 
 
+/* INDEXCOUNTER */
+.ibb-index-counter > .widget-text {
+  flex: 0 1 auto;
+  max-width: 75px;
+}
+
+
 /* VIEWER */
 .jupyter-widgets.ibb-viewer {
   width: 100%;
@@ -42,11 +56,37 @@
   height: 532px;
 }
 
-.ibb-viewer.ibb-side {
+.ibb-viewer.ibb-viewer-side {
   grid-template-areas:
     "header a"
     "main side"
     "footer b";
+}
+
+.ibb-viewer > .ibb-header {
+  grid-area: header;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.ibb-viewer > .ibb-main {
+  grid-area: main;
+  align-items: center;
+  justify-self: stretch;
+  align-self: stretch;
+}
+
+.ibb-viewer > .ibb-footer {
+  grid-area: footer;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.ibb-viewer > .ibb-side {
+  grid-area: side;
+  align-items: center;
+  justify-self: stretch;
+  align-self: stretch;
 }
 
 .jupyter-widgets.ibb-infobar {
@@ -57,6 +97,18 @@
   width: clamp(200px, 30%, 450px);
   flex-shrink: 0;
   overflow-y: auto;
+}
+
+.ibb-viewer .ibb-image-canvas {
+  flex: 0 1 auto;
+  height: 100%;
+}
+
+.ibb-viewer .ibb-conf-slider {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 4px 2px;
 }
 
 .ibb-infobar.ibb-hide {

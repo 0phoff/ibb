@@ -82,27 +82,25 @@ class BramboxViewer(Viewer):
         self.main[0].observe(self.on_poly, 'polygons')
 
     def __init_header__(self, kwargs):
-        btn_layout = ipywidgets.Layout(width='var(--jp-widgets-inline-height)', padding='0')
-
         w_btn_save = ipywidgets.Button(
             icon='picture-o',
             tooltip='save image',
-            layout=btn_layout,
         )
+        w_btn_save.add_class('ibb-square-button')
         w_btn_save.on_click(self.on_save)
 
         w_btn_box = ipywidgets.Button(
             icon='square-o',
             tooltip=f'toggle none/box/mask [{self.draw_box_text[self.draw_box]}]',
-            layout=btn_layout,
         )
+        w_btn_box.add_class('ibb-square-button')
         w_btn_box.on_click(self.on_box)
 
         w_btn_info = ipywidgets.Button(
             icon='bars',
             tooltip='toggle info pane',
-            layout=btn_layout,
         )
+        w_btn_info.add_class('ibb-square-button')
         w_btn_info.on_click(self.on_info)
 
         return [*super().__init_header__(kwargs), ipywidgets.HBox([w_btn_save, w_btn_box, w_btn_info])]
@@ -127,8 +125,8 @@ class BramboxViewer(Viewer):
             readout=True,
             readout_format='.0%',
             tooltip='confidence threshold to filter objects',
-            layout=ipywidgets.Layout(width='100%', height='100%', margin='0', padding='4px 2px'),
         )
+        w_conf_slider.add_class('ibb-conf-slider')
         w_conf_slider.observe(self.on_threshold, 'value')
 
         return [w_conf_slider]

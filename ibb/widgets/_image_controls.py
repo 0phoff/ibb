@@ -23,20 +23,18 @@ class ImageControls(UnlinkBox):
         self.name = name
         self.plural_name = plural_name if plural_name is not None else f'{name}s'
 
-        btn_layout = ipywidgets.Layout(width='var(--jp-widgets-inline-height)', padding='0')
-
         self.btn_begin = ipywidgets.Button(
             icon='fast-backward',
             tooltip=f'First {self.name}',
-            layout=btn_layout,
         )
+        self.btn_begin.add_class('ibb-square-button')
         self.btn_begin.on_click(lambda btn: self._index_set(0))
 
         self.btn_end = ipywidgets.Button(
             icon='fast-forward',
             tooltip=f'Last {self.name}',
-            layout=btn_layout,
         )
+        self.btn_end.add_class('ibb-square-button')
         self.btn_end.on_click(lambda btn: self._index_set(self.total))
 
         self.btn_prev_fast = RepeatButton(
@@ -44,8 +42,8 @@ class ImageControls(UnlinkBox):
             tooltip=f'-{self.fast} {self.plural_name} (hold to repeat)',
             delay=0.5,
             frequency=self.frequency,
-            layout=btn_layout,
         )
+        self.btn_prev_fast.add_class('ibb-square-button')
         self.btn_prev_fast.on_click(lambda btn: self._index_delta(-self.fast))
 
         self.btn_next_fast = RepeatButton(
@@ -53,8 +51,8 @@ class ImageControls(UnlinkBox):
             tooltip=f'+{self.fast} {self.plural_name} (hold to repeat)',
             delay=0.5,
             frequency=self.frequency,
-            layout=btn_layout,
         )
+        self.btn_next_fast.add_class('ibb-square-button')
         self.btn_next_fast.on_click(lambda btn: self._index_delta(self.fast))
 
         self.btn_prev = RepeatButton(
@@ -62,8 +60,8 @@ class ImageControls(UnlinkBox):
             tooltip=f'-1 {self.name} (hold to repeat)',
             delay=0.5,
             frequency=self.frequency,
-            layout=btn_layout,
         )
+        self.btn_prev.add_class('ibb-square-button')
         self.btn_prev.on_click(lambda btn: self._index_delta(-1, True))
 
         self.btn_next = RepeatButton(
@@ -71,8 +69,8 @@ class ImageControls(UnlinkBox):
             tooltip=f'+1 {self.name} (hold to repeat)',
             delay=0.5,
             frequency=self.frequency,
-            layout=btn_layout,
         )
+        self.btn_next.add_class('ibb-square-button')
         self.btn_next.on_click(lambda btn: self._index_delta(1, True))
 
         super().__init__([

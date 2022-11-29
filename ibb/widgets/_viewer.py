@@ -26,34 +26,20 @@ class Viewer(UnlinkBox):
         self.__footer = tuple(self.__init_footer__(kwargs))
 
         items = [
-            ipywidgets.HBox(
-                self.__header,
-                layout=ipywidgets.Layout(grid_area='header', align_items='flex-end', justify_content='space-between'),
-            ),
-
-            ipywidgets.HBox(
-                self.__main,
-                layout=ipywidgets.Layout(grid_area='main', align_items='center', justify_self='stretch', align_self='stretch'),
-            ),
-
-            ipywidgets.HBox(
-                self.__footer,
-                layout=ipywidgets.Layout(grid_area='footer', align_items='flex-start', justify_content='space-between'),
-            ),
+            ipywidgets.HBox(self.__header).add_class('ibb-header'),
+            ipywidgets.HBox(self.__main).add_class('ibb-main'),
+            ipywidgets.HBox(self.__footer).add_class('ibb-footer'),
         ]
 
         if len(self.__side):
-            items.append(ipywidgets.HBox(
-                self.__side,
-                layout=ipywidgets.Layout(grid_area='side', align_items='center', justify_self='stretch', align_self='stretch'),
-            ))
+            items.append(ipywidgets.HBox(self.__side).add_class('ibb-side'))
 
         super().__init__(items, type='grid', **kwargs)
 
         # Add CSS
         self.add_class('ibb-viewer')
         if len(self.__side):
-            self.add_class('ibb-side')
+            self.add_class('ibb-viewer-side')
 
         # Start first
         self.redraw()
@@ -76,10 +62,7 @@ class Viewer(UnlinkBox):
         """
         canvas_names = {'enable_poly', 'auto_clear', 'enlarge', 'color', 'alpha', 'size', 'hover_style', 'click_style'}
         canvas_kwargs = {k: v for k, v in kwargs.items() if k in canvas_names}
-        w_canvas = ImageCanvas(
-            **canvas_kwargs,
-            layout=ipywidgets.Layout(flex='0 1 auto', height='100%'),
-        )
+        w_canvas = ImageCanvas(**canvas_kwargs)
 
         return [w_canvas]
 
